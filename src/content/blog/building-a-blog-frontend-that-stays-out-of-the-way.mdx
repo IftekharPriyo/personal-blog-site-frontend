@@ -1,0 +1,48 @@
+---
+title: "Building a Blog Frontend That Stays Out of the Way"
+excerpt: "Design notes on keeping a technical publication readable, fast, and easy to extend without turning it into a product landing page."
+date: "2026-05-23"
+tags:
+  - Frontend
+  - Architecture
+featured: true
+seoTitle: "Building a Calm Technical Blog Frontend"
+seoDescription: "A practical look at building a warm, writing-focused technical blog frontend with Next.js and MDX."
+---
+
+The best personal engineering sites do not try to explain every possible thing
+on the first screen. They create enough structure for the writing to breathe,
+then step aside.
+
+For this project, the homepage stays intentionally small: a short introduction,
+one featured post, and three recent notes. That gives the reader a clear path
+without turning the page into a brochure.
+
+## Layout Principles
+
+A writing-focused interface needs fewer surfaces, not more. The structure here
+leans on predictable spacing, readable line lengths, and quiet borders.
+
+- Keep the homepage focused on recent writing.
+- Make article pages comfortable for long reading sessions.
+- Treat tags and metadata as helpful context, not decoration.
+- Prefer calm hover states over visual spectacle.
+
+## A Small Component Boundary
+
+The blog card only needs post metadata. The detail route owns the MDX rendering.
+That keeps list views fast and prevents the archive from doing article work.
+
+```tsx
+interface BlogPostMeta {
+  title: string;
+  slug: string;
+  excerpt: string;
+  date: string;
+  readingTime: string;
+  tags: string[];
+}
+```
+
+This is enough structure for a local MDX system today, while leaving room for a
+backend later without rebuilding the UI.

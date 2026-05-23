@@ -10,74 +10,140 @@ The website should feel like:
 The experience should feel:
 - warm,
 - readable,
-- minimal,
 - editorial,
-- human.
+- soft,
+- human,
+- calm.
 
 Avoid:
+- harsh white backgrounds,
 - startup landing page aesthetics,
-- flashy gradients,
 - overly saturated colors,
 - excessive animations,
-- heavy shadows.
+- flashy gradients,
+- aggressive visual contrast.
 
 ---
 
 # Design Direction
 
 - Minimal
-- Clean
-- Modern
-- Professional engineering blog aesthetic
-- Content-first interface
-- Warm editorial feel
+- Editorial
+- Typography-focused
+- Writing-first
+- Calm visual hierarchy
+- Comfortable reading experience
+
+The UI should feel:
+- premium,
+- warm,
+- intentional,
+- spacious.
 
 ---
 
-# Color Direction
+# Light Theme Palette
 
-Use a warm editorial palette.
+Page Background:    #ece6de
+Surface:            #f1ebe4
+Card Background:    #f6f1ea
 
-Preferred palette:
+Primary Text:       #181512
+Secondary Text:     #4d443d
+Muted Text:         #7b6f65
 
-Background:      #f5f3ef
-Card:            #fcfbf8
-Primary Text:    #1f1f1f
-Secondary Text:  #5f5f5f
-Border:          #e7e2da
-Accent:          #8b6f47
+Border:             #d8cec2
+Accent:             #9b7653
 
-The interface should feel soft and comfortable for long reading sessions.
+The light theme should:
+- reduce eye strain,
+- avoid pure white,
+- maintain soft editorial contrast,
+- feel like warm paper instead of a bright dashboard.
 
-Avoid:
-- pure white backgrounds,
-- overly dark harsh contrasts,
-- neon colors,
-- flashy gradients.
+---
+
+# Dark Theme Palette
+
+Background:         #161311
+Surface:            #1d1917
+Card:               #221d1a
+
+Primary Text:       #f2ece6
+Secondary Text:     #c8b8aa
+Muted Text:         #9f8f82
+
+Border:             #3a312c
+Accent:             #b08968
+
+Avoid pure black backgrounds.
 
 ---
 
 # Typography Direction
 
-Typography should be a primary design element.
+Typography is one of the most important parts of the design.
 
 Prioritize:
-- readability,
-- spacing,
-- line height,
-- content width,
-- clean hierarchy.
-
-Use:
-- spacious layouts,
+- strong hierarchy,
+- generous line height,
+- elegant spacing,
 - comfortable reading width,
-- strong heading hierarchy,
-- calm typography rhythm.
+- clean prose rhythm.
 
 Avoid:
-- overly compressed layouts,
+- cramped layouts,
 - tiny text,
-- cluttered UI.
+- dense paragraphs.
+
+---
+
+# Editorial Rhythm
+
+The reading flow should feel calm and intentional.
+
+Use:
+- generous whitespace,
+- breathing room between sections,
+- soft visual separation,
+- subtle hierarchy changes.
+
+The site should never feel crowded.
+
+---
+
+# Components
+
+Components should feel:
+- subtle,
+- refined,
+- editorial,
+- understated.
+
+Use:
+- soft borders,
+- gentle surfaces,
+- minimal shadows,
+- calm hover states.
+
+Avoid:
+- loud cards,
+- glowing effects,
+- aggressive hover animations.
+
+---
+
+# Tags & Metadata
+
+Tags should:
+- integrate naturally into the design,
+- feel soft and refined,
+- avoid default Tailwind appearance.
+
+Metadata should:
+- remain lightweight,
+- support readability,
+- avoid excessive emphasis.
 
 ---
 
@@ -88,31 +154,12 @@ Travel and lifestyle photography may later be integrated into articles.
 Images should feel:
 - cinematic,
 - natural,
-- subtle,
+- warm,
 - editorial.
 
 Avoid overly saturated imagery.
 
 Images should support the writing, not overpower it.
-
----
-
-# Spacing Philosophy
-
-- Use generous whitespace
-- Maintain calm section spacing
-- Avoid crowded layouts
-- Keep visual rhythm consistent
-
----
-
-# Components
-
-- Rounded corners
-- Soft subtle borders
-- Minimal shadows
-- Calm hover states
-- Consistent spacing
 
 ---
 
