@@ -1,60 +1,140 @@
 # UI Guidelines
 
-## Design Direction
+## Visual Identity
+
+The website should feel like:
+- a personal engineering journal,
+- a calm digital publication,
+- a thoughtful technical notebook.
+
+The experience should feel:
+- warm,
+- readable,
+- minimal,
+- editorial,
+- human.
+
+Avoid:
+- startup landing page aesthetics,
+- flashy gradients,
+- overly saturated colors,
+- excessive animations,
+- heavy shadows.
+
+---
+
+# Design Direction
+
 - Minimal
 - Clean
 - Modern
 - Professional engineering blog aesthetic
 - Content-first interface
+- Warm editorial feel
 
 ---
 
-## Color Philosophy
-- Dark mode first
-- Neutral color palette
-- Good contrast
-- Avoid oversaturated colors
+# Color Direction
+
+Use a warm editorial palette.
+
+Preferred palette:
+
+Background:      #f5f3ef
+Card:            #fcfbf8
+Primary Text:    #1f1f1f
+Secondary Text:  #5f5f5f
+Border:          #e7e2da
+Accent:          #8b6f47
+
+The interface should feel soft and comfortable for long reading sessions.
+
+Avoid:
+- pure white backgrounds,
+- overly dark harsh contrasts,
+- neon colors,
+- flashy gradients.
 
 ---
 
-## Typography
-- Strong typography hierarchy
-- Large readable headings
-- Comfortable reading width
-- Readability-focused layout
+# Typography Direction
+
+Typography should be a primary design element.
+
+Prioritize:
+- readability,
+- spacing,
+- line height,
+- content width,
+- clean hierarchy.
+
+Use:
+- spacious layouts,
+- comfortable reading width,
+- strong heading hierarchy,
+- calm typography rhythm.
+
+Avoid:
+- overly compressed layouts,
+- tiny text,
+- cluttered UI.
 
 ---
 
-## Spacing
+# Imagery Philosophy
+
+Travel and lifestyle photography may later be integrated into articles.
+
+Images should feel:
+- cinematic,
+- natural,
+- subtle,
+- editorial.
+
+Avoid overly saturated imagery.
+
+Images should support the writing, not overpower it.
+
+---
+
+# Spacing Philosophy
+
 - Use generous whitespace
-- Avoid cluttered sections
-- Maintain consistent padding and margins
+- Maintain calm section spacing
+- Avoid crowded layouts
+- Keep visual rhythm consistent
 
 ---
 
-## Components
+# Components
+
 - Rounded corners
-- Soft shadows where appropriate
-- Smooth hover states
-- Consistent button styles
+- Soft subtle borders
+- Minimal shadows
+- Calm hover states
+- Consistent spacing
 
 ---
 
-## Responsiveness
+# Responsiveness
+
 - Mobile-first
 - Tablet-friendly
 - Desktop optimized
+- Comfortable reading experience on all devices
 
 ---
 
-## Animations
+# Animations
+
 - Subtle only
 - Smooth transitions
-- Avoid distracting effects
+- Gentle hover effects
+- Avoid distracting motion
 
 ---
 
-## Homepage Philosophy
+# Homepage Philosophy
 
 Homepage should remain minimal and focused.
 

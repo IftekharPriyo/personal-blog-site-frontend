@@ -53,6 +53,10 @@
 - Performance optimization
 - Responsive refinement
 - Animation polish
+- Refine warm editorial color palette
+- Improve typography rhythm
+- Improve reading comfort
+- Add subtle editorial-style visual polish
 
 ---
 
