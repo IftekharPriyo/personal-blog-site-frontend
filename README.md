@@ -22,12 +22,12 @@ This project currently includes:
 - SEO optimization
 - Dark/light mode
 - Modern minimal interface
+- Hidden admin sign-in route at `/admin`
+- HTTP-only cookie authentication through the backend API
 
 This project does not yet include:
-- Backend API
 - CMS/admin dashboard
-- Authentication
-- Database integration
+- Admin content-management tools
 
 ---
 
@@ -57,6 +57,19 @@ This project does not yet include:
 - Practice scalable frontend architecture
 - Publish technical content
 - Prepare for future backend integration
+
+---
+
+## Admin Authentication
+
+The frontend forwards admin authentication to the backend without exposing the
+JWT to client-side JavaScript. The backend defaults to `http://localhost:5000`
+during local development. Set the server-only environment variable below when
+the backend uses another origin:
+
+```env
+BACKEND_API_URL=https://api.example.com
+```
 
 ---
 
