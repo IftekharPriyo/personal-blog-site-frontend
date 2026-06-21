@@ -1,4 +1,4 @@
-export interface BlogPost {
+export interface BlogPostMeta {
   title: string;
   slug: string;
   excerpt: string;
@@ -6,4 +6,10 @@ export interface BlogPost {
   readingTime: string;
   tags: string[];
   featured?: boolean;
+  seoTitle?: string;
+  seoDescription?: string;
+}
+
+export interface BlogPost extends BlogPostMeta {
+  content: React.ReactNode;
 }

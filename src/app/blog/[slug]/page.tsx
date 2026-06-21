@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { PostMeta } from "@/components/blog/post-meta";
+import { PostTags } from "@/components/blog/post-tags";
 import { Container } from "@/components/shared/container";
-import { posts } from "@/constants/posts";
+import { getAllPosts, getPostBySlug } from "@/lib/blog";
 
 type BlogPostPageProps = {
   params: Promise<{ slug: string }>;
@@ -11,7 +13,7 @@ export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = posts.find((item) => item.slug === slug);
+  const post = await getPostBySlug(slug);
 
   if (!post) {
     return {
@@ -20,12 +22,26 @@ export async function generateMetadata({
   }
 
   return {
-    title: post.title,
-    description: post.excerpt,
+    title: post.seoTitle || post.title,
+    description: post.seoDescription || post.excerpt,
+    openGraph: {
+      title: post.seoTitle || post.title,
+      description: post.seoDescription || post.excerpt,
+      type: "article",
+      publishedTime: post.date,
+      tags: post.tags,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.seoTitle || post.title,
+      description: post.seoDescription || post.excerpt,
+    },
   };
 }
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const posts = await getAllPosts();
+
   return posts.map((post) => ({
     slug: post.slug,
   }));
@@ -33,28 +49,26 @@ export function generateStaticParams() {
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params;
-  const post = posts.find((item) => item.slug === slug);
+  const post = await getPostBySlug(slug);
 
   if (!post) {
     notFound();
   }
 
   return (
-    <Container className="py-12 sm:py-16">
-      <article className="mx-auto max-w-3xl">
-        <p className="text-sm text-muted-foreground">
-          {post.date} / {post.readingTime}
-        </p>
-        <h1 className="mt-4 text-4xl font-semibold leading-[1.12] sm:text-5xl">
+    <Container className="py-14 sm:py-18 lg:py-24">
+      <article className="mx-auto max-w-[44rem]">
+        <PostMeta post={post} />
+        <h1 className="mt-5 text-4xl font-semibold leading-[1.12] text-balance sm:text-5xl">
           {post.title}
         </h1>
-        <p className="mt-6 text-lg leading-8 text-muted-foreground">
+        <p className="mt-7 text-lg leading-8 text-muted-foreground sm:text-xl sm:leading-9">
           {post.excerpt}
         </p>
-        <div className="mt-10 rounded-lg border border-border/75 bg-card/70 p-6 text-sm leading-7 text-muted-foreground">
-          This placeholder keeps the route ready for local MDX content in the
-          next phase without adding CMS, database, or backend logic.
+        <div className="mt-7">
+          <PostTags tags={post.tags} />
         </div>
+        <div className="mdx-content mt-14">{post.content}</div>
       </article>
     </Container>
   );

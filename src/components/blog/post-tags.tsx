@@ -4,11 +4,11 @@ interface PostTagsProps {
 
 export function PostTags({ tags }: PostTagsProps) {
   return (
-    <ul className="flex flex-wrap gap-2" aria-label="Post tags">
+    <ul className="flex flex-wrap gap-2.5" aria-label="Post topics">
       {tags.map((tag) => (
         <li
           key={tag}
-          className="rounded-md border border-border/75 bg-background/45 px-2 py-1 text-xs text-muted-foreground"
+          className="rounded-md border border-border/70 bg-secondary/65 px-2.5 py-1 text-xs text-muted-foreground/85 transition-colors group-hover:border-primary/30 group-hover:bg-card/80 group-hover:text-muted-foreground"
         >
           {tag}
         </li>

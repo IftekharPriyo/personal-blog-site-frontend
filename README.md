@@ -22,12 +22,15 @@ This project currently includes:
 - SEO optimization
 - Dark/light mode
 - Modern minimal interface
+- Hidden admin sign-in route at `/admin`
+- HTTP-only cookie authentication through the backend API
+- Responsive admin dashboard shell and navigation
+- Article overview, listing, creation, and editing interfaces
+- Category, flexible tag, and publishing fields
 
 This project does not yet include:
-- Backend API
-- CMS/admin dashboard
-- Authentication
-- Database integration
+- Backend article CRUD endpoints
+- Persistent dashboard content management
 
 ---
 
@@ -60,10 +63,22 @@ This project does not yet include:
 
 ---
 
+## Admin Authentication
+
+The frontend forwards admin authentication to the backend without exposing the
+JWT to client-side JavaScript. The backend defaults to `http://localhost:5000`
+during local development. Set the server-only environment variable below when
+the backend uses another origin:
+
+```env
+BACKEND_API_URL=https://api.example.com
+```
+
+---
+
 ## Future Plans
 
-- Backend API integration
-- CMS admin dashboard
+- Article API integration
+- Persistent CMS workflows
 - PostgreSQL database
-- Authentication system
 - AWS deployment architecture

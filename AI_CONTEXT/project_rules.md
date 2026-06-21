@@ -17,3 +17,16 @@
 - Optimize for SEO and performance
 - Use clean import structure
 - Avoid deeply nested components
+- Prioritize editorial reading experience
+- Prioritize typography quality
+- Maintain consistent spacing rhythm
+- Use softer dark surfaces instead of pure black
+- Keep visual contrast comfortable for long reading sessions
+- Avoid generic Tailwind-looking UI
+- Avoid pure white backgrounds
+- Avoid pure black backgrounds
+- Maintain soft tonal hierarchy
+- Prioritize reading comfort over visual intensity
+- Use warm neutral surfaces
+- Avoid generic Tailwind styling
+- Prioritize editorial polish over feature quantity

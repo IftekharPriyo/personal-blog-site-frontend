@@ -4,10 +4,13 @@ import { FeaturedPost } from "@/components/blog/featured-post";
 import { PostCard } from "@/components/blog/post-card";
 import { Container } from "@/components/shared/container";
 import { buttonVariants } from "@/components/ui/button";
-import { featuredPost, latestPosts } from "@/constants/posts";
+import { getFeaturedPost, getLatestPosts } from "@/lib/blog";
 import { cn } from "@/lib/utils";
 
-export default function Home() {
+export default async function Home() {
+  const featuredPost = await getFeaturedPost();
+  const latestPosts = await getLatestPosts(3);
+
   return (
     <Container className="animate-fade-in py-14 sm:py-16 lg:py-20">
       <section className="max-w-3xl">
@@ -34,7 +37,7 @@ export default function Home() {
             </h2>
           </div>
         </div>
-        <FeaturedPost post={featuredPost} />
+        {featuredPost ? <FeaturedPost post={featuredPost} /> : null}
       </section>
 
       <section className="mt-16 sm:mt-20" aria-labelledby="latest-posts">
@@ -57,8 +60,8 @@ export default function Home() {
           </Link>
         </div>
         <div className="grid gap-4 md:grid-cols-3">
-          {latestPosts.slice(0, 3).map((post) => (
-            <PostCard key={post.slug} post={post} />
+          {latestPosts.map((post) => (
+            <PostCard key={post.slug} post={post} variant="compact" />
           ))}
         </div>
         <Link

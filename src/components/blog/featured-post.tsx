@@ -2,22 +2,22 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { PostMeta } from "@/components/blog/post-meta";
 import { PostTags } from "@/components/blog/post-tags";
-import type { BlogPost } from "@/types/post";
+import type { BlogPostMeta } from "@/types/post";
 
 interface FeaturedPostProps {
-  post: BlogPost;
+  post: BlogPostMeta;
 }
 
 export function FeaturedPost({ post }: FeaturedPostProps) {
   return (
-    <article className="rounded-lg border border-border/80 bg-card/85 p-6 text-card-foreground shadow-[0_1px_0_rgba(31,31,31,0.03)] transition-colors hover:border-primary/35 sm:p-8">
+    <article className="rounded-lg border border-border/80 bg-card/75 p-6 text-card-foreground shadow-[0_1px_0_rgba(24,21,18,0.03)] transition-colors hover:border-primary/35 hover:bg-card/90 sm:p-8">
       <div className="grid gap-8 lg:grid-cols-[1fr_16rem] lg:items-end">
         <div>
           <PostMeta post={post} />
           <h3 className="mt-4 max-w-2xl text-2xl font-semibold leading-[1.18] sm:text-3xl">
             <Link href={`/blog/${post.slug}`}>{post.title}</Link>
           </h3>
-          <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground">
+          <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground sm:leading-8">
             {post.excerpt}
           </p>
         </div>

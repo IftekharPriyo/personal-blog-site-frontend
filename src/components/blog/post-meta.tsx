@@ -1,12 +1,12 @@
-import type { BlogPost } from "@/types/post";
+import type { BlogPostMeta } from "@/types/post";
 
 interface PostMetaProps {
-  post: Pick<BlogPost, "date" | "readingTime">;
+  post: Pick<BlogPostMeta, "date" | "readingTime">;
 }
 
 export function PostMeta({ post }: PostMetaProps) {
   return (
-    <p className="text-sm text-muted-foreground">
+    <p className="text-xs font-medium uppercase text-muted-foreground/75">
       <time dateTime={post.date}>
         {new Intl.DateTimeFormat("en", {
           month: "short",
@@ -14,7 +14,9 @@ export function PostMeta({ post }: PostMetaProps) {
           year: "numeric",
         }).format(new Date(post.date))}
       </time>
-      <span aria-hidden="true"> / </span>
+      <span className="px-2 text-primary/70" aria-hidden="true">
+        /
+      </span>
       {post.readingTime}
     </p>
   );

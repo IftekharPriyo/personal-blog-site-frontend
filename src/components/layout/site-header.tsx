@@ -5,7 +5,7 @@ import { ThemeToggle } from "./theme-toggle";
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/90 backdrop-blur-sm">
+    <header className="sticky top-0 z-40 border-b border-border/70 bg-background/90 backdrop-blur-sm">
       <Container className="flex min-h-16 items-center justify-between gap-4 py-3.5">
         <Link
           href="/"
@@ -22,7 +22,7 @@ export function SiteHeader() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent/60 hover:text-foreground"
+                className="rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
               >
                 {item.label}
               </Link>
@@ -36,7 +36,7 @@ export function SiteHeader() {
           <Link
             key={item.href}
             href={item.href}
-            className="flex-1 rounded-md px-3 py-2 text-center text-sm text-muted-foreground transition-colors hover:bg-accent/60 hover:text-foreground"
+            className="flex-1 rounded-md px-3 py-2 text-center text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
           >
             {item.label}
           </Link>

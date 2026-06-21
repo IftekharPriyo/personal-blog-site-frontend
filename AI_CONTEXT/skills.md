@@ -89,6 +89,11 @@ Travel photography and personal experiences may later become part of the platfor
 - Maintain clean folder organization
 - Follow accessibility best practices
 - Optimize for performance and SEO
+- spacing,
+- typography,
+- contrast,
+- prose styling,
+- and visual rhythm
 
 ---
 

@@ -1,0 +1,29 @@
+---
+title: "Security Notes for Everyday Backend Work"
+excerpt: "A short set of reminders for authentication boundaries, input validation, dependency review, and secret handling."
+date: "2026-05-12"
+tags:
+  - Security
+  - Backend
+---
+
+Security improves when it becomes part of ordinary backend work instead of a
+separate dramatic event. Most useful habits are small and repeatable.
+
+## Daily Reminders
+
+Treat boundaries clearly:
+
+- Validate inputs at the edge.
+- Keep secrets outside the client bundle.
+- Review dependency changes before merging.
+- Make authorization checks close to protected actions.
+
+```ts
+function canEditPost(userId: string, authorId: string) {
+  return userId === authorId;
+}
+```
+
+Simple examples do not replace a full security model, but they keep the basic
+questions visible while building.

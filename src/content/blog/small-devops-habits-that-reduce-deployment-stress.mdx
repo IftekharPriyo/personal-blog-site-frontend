@@ -1,0 +1,31 @@
+---
+title: "Small DevOps Habits That Reduce Deployment Stress"
+excerpt: "Simple habits around logs, rollbacks, environment parity, and release notes that make deployments calmer."
+date: "2026-05-16"
+tags:
+  - DevOps
+  - Operations
+---
+
+Deployment stress usually comes from uncertainty. The release may be small, but
+if nobody knows how to observe it or reverse it, the process feels fragile.
+
+## Before Shipping
+
+The habits that help most are ordinary:
+
+- Check the logs before and after the change.
+- Know the rollback path before the deploy starts.
+- Keep environment variables documented.
+- Write down the expected user-visible behavior.
+
+```ts
+async function deploy() {
+  await runChecks();
+  await publishRelease();
+  await verifyHealth();
+}
+```
+
+The goal is not ceremony. The goal is making the next step obvious when attention
+is under pressure.
