@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { AdminLoginForm } from "@/components/admin/admin-login-form";
-import { AdminSession } from "@/components/admin/admin-session";
 import { Container } from "@/components/shared/container";
 import { getAdminSession } from "@/lib/auth";
 
@@ -17,6 +17,8 @@ export const metadata: Metadata = {
 export default async function AdminPage() {
   const admin = await getAdminSession();
 
+  if (admin) redirect("/admin/dashboard");
+
   return (
     <Container className="flex min-h-[calc(100vh-13rem)] items-center justify-center py-12 sm:py-16">
       <section className="w-full max-w-md" aria-labelledby="admin-heading">
@@ -27,16 +29,10 @@ export default async function AdminPage() {
           {admin ? "Admin access" : "Welcome back."}
         </h1>
         <p className="mt-4 leading-7 text-muted-foreground">
-          {admin
-            ? "Your administrator session is active."
-            : "Sign in with your administrator account to continue."}
+          Sign in with your administrator account to continue.
         </p>
 
-        {admin ? (
-          <AdminSession name={admin.name} email={admin.email} />
-        ) : (
-          <AdminLoginForm />
-        )}
+        <AdminLoginForm />
       </section>
     </Container>
   );

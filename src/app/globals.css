@@ -132,6 +132,17 @@
     @apply font-sans;
     scroll-behavior: smooth;
   }
+
+  [data-scroll-container] {
+    scroll-behavior: smooth;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html,
+  [data-scroll-container] {
+    scroll-behavior: auto;
+  }
 }
 
 @layer utilities {
@@ -179,6 +190,7 @@
   .mdx-content :not(pre) > code {
     @apply border-border/70 bg-secondary/80 text-foreground;
   }
+
 }
 
 @keyframes fade-in {
