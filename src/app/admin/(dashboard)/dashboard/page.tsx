@@ -2,35 +2,30 @@ import { ArrowRight, FilePlus2, Files, FolderOpen, Tags } from "lucide-react";
 import Link from "next/link";
 import { ArticleStatus } from "@/components/admin/article-status";
 import { buttonVariants } from "@/components/ui/button";
-import {
-  adminArticles,
-  adminCategories,
-  adminTags,
-} from "@/lib/admin-data";
+import { getAdminArticles, getArticleOptions } from "@/lib/articles";
 import { cn } from "@/lib/utils";
 
-const dateFormatter = new Intl.DateTimeFormat("en", {
-  dateStyle: "medium",
-});
+const dateFormatter = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
 
-export default function DashboardPage() {
-  const drafts = adminArticles.filter((article) => article.status === "DRAFT");
-  const published = adminArticles.filter(
-    (article) => article.status === "PUBLISHED",
-  );
-  const recentArticles = [...adminArticles]
+export default async function DashboardPage() {
+  const [articles, options] = await Promise.all([
+    getAdminArticles(),
+    getArticleOptions(),
+  ]);
+  const drafts = articles.filter((article) => article.status === "DRAFT");
+  const published = articles.filter((article) => article.status === "PUBLISHED");
+  const recentArticles = [...articles]
     .sort(
       (left, right) =>
-        new Date(right.updatedAt).getTime() -
-        new Date(left.updatedAt).getTime(),
+        new Date(right.updatedAt).getTime() - new Date(left.updatedAt).getTime(),
     )
     .slice(0, 4);
 
   const summary = [
-    { label: "All articles", value: adminArticles.length, icon: Files },
+    { label: "All articles", value: articles.length, icon: Files },
     { label: "Published", value: published.length, icon: FolderOpen },
     { label: "Drafts", value: drafts.length, icon: FilePlus2 },
-    { label: "Tags", value: adminTags.length, icon: Tags },
+    { label: "Tags", value: options.tags.length, icon: Tags },
   ];
 
   return (
@@ -38,18 +33,12 @@ export default function DashboardPage() {
       <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-sm font-medium uppercase text-primary">Overview</p>
-          <h1 className="mt-3 text-3xl font-semibold sm:text-4xl">
-            Editorial dashboard
-          </h1>
+          <h1 className="mt-3 text-3xl font-semibold sm:text-4xl">Editorial dashboard</h1>
           <p className="mt-3 max-w-2xl leading-7 text-muted-foreground">
-            A quiet workspace for drafting, organizing, and preparing journal
-            articles.
+            Live publishing activity, drafts, and recently updated articles.
           </p>
         </div>
-        <Link
-          href="/admin/articles/new"
-          className={cn(buttonVariants({ size: "lg" }), "self-start sm:self-auto")}
-        >
+        <Link href="/admin/articles/new" className={cn(buttonVariants({ size: "lg" }), "self-start sm:self-auto")}>
           <FilePlus2 aria-hidden="true" />
           Create article
         </Link>
@@ -58,7 +47,6 @@ export default function DashboardPage() {
       <section className="mt-9 grid gap-4 sm:grid-cols-2 xl:grid-cols-4" aria-label="Content summary">
         {summary.map((item) => {
           const Icon = item.icon;
-
           return (
             <div key={item.label} className="rounded-xl border border-border bg-card p-5">
               <div className="flex items-center justify-between gap-4">
@@ -75,14 +63,9 @@ export default function DashboardPage() {
         <div className="flex items-end justify-between gap-4">
           <div>
             <p className="text-sm text-primary">Writing activity</p>
-            <h2 id="recent-articles" className="mt-1 text-2xl font-semibold">
-              Recently updated
-            </h2>
+            <h2 id="recent-articles" className="mt-1 text-2xl font-semibold">Recently updated</h2>
           </div>
-          <Link
-            href="/admin/articles"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
-          >
+          <Link href="/admin/articles" className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline">
             All articles
             <ArrowRight className="size-4" aria-hidden="true" />
           </Link>
@@ -91,15 +74,9 @@ export default function DashboardPage() {
         <div className="mt-5 overflow-hidden rounded-xl border border-border bg-card">
           <div className="divide-y divide-border">
             {recentArticles.map((article) => (
-              <div
-                key={article.id}
-                className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between"
-              >
+              <div key={article.id} className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
                 <div className="min-w-0">
-                  <Link
-                    href={`/admin/articles/${article.id}/edit`}
-                    className="font-medium transition-colors hover:text-primary"
-                  >
+                  <Link href={`/admin/articles/${article.id}/edit`} className="font-medium transition-colors hover:text-primary">
                     {article.title}
                   </Link>
                   <p className="mt-1 text-sm text-muted-foreground">
@@ -109,13 +86,22 @@ export default function DashboardPage() {
                 <ArticleStatus status={article.status} />
               </div>
             ))}
+            {recentArticles.length === 0 ? (
+              <div className="px-5 py-12 text-center">
+                <p className="font-medium">No articles yet</p>
+                <p className="mt-1 text-sm text-muted-foreground">Create your first article to begin the journal.</p>
+                <Link href="/admin/articles/new" className={cn(buttonVariants({ variant: "outline" }), "mt-5")}>
+                  <FilePlus2 aria-hidden="true" />
+                  Create article
+                </Link>
+              </div>
+            ) : null}
           </div>
         </div>
       </section>
 
       <p className="mt-6 text-xs text-muted-foreground">
-        Preview data · {adminCategories.length} categories are represented from
-        the current content schema.
+        Live content data · {options.categories.length} categories and {options.tags.length} tags available.
       </p>
     </div>
   );

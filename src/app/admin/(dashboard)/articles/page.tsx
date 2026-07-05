@@ -2,10 +2,12 @@ import { FilePlus2 } from "lucide-react";
 import Link from "next/link";
 import { ArticleList } from "@/components/admin/article-list";
 import { buttonVariants } from "@/components/ui/button";
-import { adminArticles } from "@/lib/admin-data";
+import { getAdminArticles } from "@/lib/articles";
 import { cn } from "@/lib/utils";
 
-export default function ArticlesPage() {
+export default async function ArticlesPage() {
+  const articles = await getAdminArticles();
+
   return (
     <div className="mx-auto max-w-6xl animate-fade-in">
       <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
@@ -25,7 +27,7 @@ export default function ArticlesPage() {
         </Link>
       </div>
 
-      <ArticleList articles={adminArticles} />
+      <ArticleList articles={articles} />
     </div>
   );
 }

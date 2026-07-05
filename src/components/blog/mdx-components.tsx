@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { ComponentPropsWithoutRef } from "react";
+import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 function MdxLink(props: ComponentPropsWithoutRef<"a">) {
@@ -12,7 +12,16 @@ function MdxLink(props: ComponentPropsWithoutRef<"a">) {
   return <a target="_blank" rel="noreferrer" {...props} />;
 }
 
+function Callout({ children }: { children?: ReactNode }) {
+  return (
+    <aside className="rounded-lg border border-primary/25 bg-primary/10 px-5 py-4 text-foreground">
+      {children}
+    </aside>
+  );
+}
+
 export const mdxComponents = {
+  Callout,
   a: MdxLink,
   h2: (props: ComponentPropsWithoutRef<"h2">) => (
     <h2
