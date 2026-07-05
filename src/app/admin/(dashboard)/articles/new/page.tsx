@@ -1,12 +1,10 @@
 import { ArticleForm } from "@/components/admin/article-form";
-import {
-  adminCategories,
-  adminTags,
-} from "@/lib/admin-data";
+import { getArticleOptions } from "@/lib/articles";
 import { getAdminSession } from "@/lib/auth";
 
 export default async function CreateArticlePage() {
   const admin = await getAdminSession();
+  const { categories, tags } = await getArticleOptions();
 
   return (
     <div className="mx-auto max-w-6xl animate-fade-in">
@@ -22,8 +20,8 @@ export default async function CreateArticlePage() {
 
       <ArticleForm
         authorName={admin?.name ?? "Administrator"}
-        categories={adminCategories}
-        tags={adminTags}
+        categories={categories}
+        tags={tags}
       />
     </div>
   );

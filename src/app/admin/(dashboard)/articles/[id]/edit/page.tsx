@@ -1,10 +1,6 @@
 import { notFound } from "next/navigation";
 import { ArticleForm } from "@/components/admin/article-form";
-import {
-  adminCategories,
-  adminTags,
-  getAdminArticle,
-} from "@/lib/admin-data";
+import { getAdminArticle, getArticleOptions } from "@/lib/articles";
 
 interface EditArticlePageProps {
   params: Promise<{ id: string }>;
@@ -12,7 +8,10 @@ interface EditArticlePageProps {
 
 export default async function EditArticlePage({ params }: EditArticlePageProps) {
   const { id } = await params;
-  const article = getAdminArticle(id);
+  const [article, options] = await Promise.all([
+    getAdminArticle(id),
+    getArticleOptions(),
+  ]);
 
   if (!article) notFound();
 
@@ -31,8 +30,8 @@ export default async function EditArticlePage({ params }: EditArticlePageProps) 
       <ArticleForm
         article={article}
         authorName={article.author.name}
-        categories={adminCategories}
-        tags={adminTags}
+        categories={options.categories}
+        tags={options.tags}
       />
     </div>
   );

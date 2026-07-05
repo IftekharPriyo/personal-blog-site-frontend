@@ -4,9 +4,9 @@ export interface AdminArticle {
   id: string;
   title: string;
   slug: string;
-  excerpt: string;
+  excerpt: string | null;
   content: string;
-  coverImage: string;
+  coverImage: string | null;
   status: ArticleStatus;
   author: {
     id: string;
@@ -23,6 +23,18 @@ export interface AdminArticle {
   publishedAt: string | null;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface ArticleRequestBody {
+  title: string;
+  slug: string;
+  excerpt?: string | null;
+  content: string;
+  coverImage?: string | null;
+  status: ArticleStatus;
+  categoryId: string;
+  tagIds: string[];
+  newTags: string[];
 }
 
 export interface AdminOption {

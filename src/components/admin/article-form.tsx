@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { Check, Info, Plus, Save, X } from "lucide-react";
+import { Check, Info, LoaderCircle, Plus, Save, X } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import type { AdminArticle, AdminOption } from "@/types/admin";
-import { cn } from "@/lib/utils";
+import { MdxEditor } from "@/components/admin/mdx-editor";
+import type { AdminArticle, AdminOption, ArticleRequestBody, ArticleStatus } from "@/types/admin";
 
 interface ArticleFormProps {
   article?: AdminArticle;
@@ -26,20 +27,19 @@ function toSlug(value: string) {
     .replace(/^-|-$/g, "");
 }
 
-function toDateTimeLocal(value: string | null | undefined) {
-  return value ? value.slice(0, 16) : "";
-}
-
 export function ArticleForm({
   article,
   authorName,
   categories,
   tags,
 }: ArticleFormProps) {
+  const router = useRouter();
   const [title, setTitle] = useState(article?.title ?? "");
   const [slug, setSlug] = useState(article?.slug ?? "");
+  const [status, setStatus] = useState<ArticleStatus>(article?.status ?? "DRAFT");
   const [slugWasEdited, setSlugWasEdited] = useState(Boolean(article));
-  const [showApiNotice, setShowApiNotice] = useState(false);
+  const [message, setMessage] = useState<{ type: "error" | "success"; text: string } | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedTagIds, setSelectedTagIds] = useState(
     () => new Set(article?.tags.map((tag) => tag.id) ?? []),
   );
@@ -51,9 +51,59 @@ export function ArticleForm({
     if (!slugWasEdited) setSlug(toSlug(value));
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setShowApiNotice(true);
+    setMessage(null);
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const submitter = (event.nativeEvent as SubmitEvent).submitter as HTMLButtonElement | null;
+    const excerpt = String(formData.get("excerpt") ?? "").trim();
+    const coverImage = String(formData.get("coverImage") ?? "").trim();
+    const payload: ArticleRequestBody = {
+      title: String(formData.get("title") ?? ""),
+      slug: String(formData.get("slug") ?? ""),
+      excerpt: excerpt || null,
+      content: String(formData.get("content") ?? ""),
+      coverImage: coverImage || null,
+      status: submitter?.value === "draft" ? "DRAFT" : status,
+      categoryId: String(formData.get("categoryId") ?? ""),
+      tagIds: [...selectedTagIds],
+      newTags: customTags,
+    };
+
+    setIsSubmitting(true);
+    try {
+      const endpoint = article
+        ? `/api/admin/articles/${encodeURIComponent(article.id)}`
+        : "/api/admin/articles";
+      const response = await fetch(endpoint, {
+        method: article ? "PUT" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = (await response.json()) as {
+        message?: string;
+        errors?: Array<{ field: string; message: string }>;
+      };
+
+      if (!response.ok) {
+        const details = data.errors?.map((item) => item.message).join(" ");
+        setMessage({ type: "error", text: details || data.message || "Unable to create article." });
+        return;
+      }
+
+      setMessage({
+        type: "success",
+        text: article ? "Article updated successfully." : "Article created successfully.",
+      });
+      setStatus(payload.status);
+      if (article) router.refresh();
+    } catch {
+      setMessage({ type: "error", text: "The article service is unavailable. Please try again." });
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   function addTag() {
@@ -145,7 +195,7 @@ export function ArticleForm({
                   id="excerpt"
                   name="excerpt"
                   className="min-h-24"
-                  defaultValue={article?.excerpt}
+                  defaultValue={article?.excerpt ?? ""}
                   placeholder="A concise summary for article cards and metadata."
                 />
               </div>
@@ -154,17 +204,10 @@ export function ArticleForm({
                 <label className="text-sm font-medium" htmlFor="content">
                   Content
                 </label>
-                <Textarea
-                  id="content"
-                  name="content"
-                  className="min-h-[28rem] font-mono text-[0.84rem]"
-                  defaultValue={article?.content}
-                  placeholder="Write the article content here. Markdown support can be connected with the content API."
-                  required
-                />
+                <MdxEditor defaultValue={article?.content} />
                 <p className="text-xs text-muted-foreground">
-                  Stored in the backend as text. This structure is ready for a
-                  Markdown or rich-text editor later.
+                  Supports Markdown, GitHub-flavored tables, links, and fenced
+                  code blocks. The backend stores the original MDX source.
                 </p>
               </div>
             </div>
@@ -183,7 +226,7 @@ export function ArticleForm({
                 id="coverImage"
                 name="coverImage"
                 type="url"
-                defaultValue={article?.coverImage}
+                defaultValue={article?.coverImage ?? ""}
                 placeholder="https://example.com/image.jpg"
               />
             </div>
@@ -202,24 +245,17 @@ export function ArticleForm({
                   id="status"
                   name="status"
                   className={selectClassName}
-                  defaultValue={article?.status ?? "DRAFT"}
+                  value={status}
+                  onChange={(event) => setStatus(event.target.value as ArticleStatus)}
                 >
                   <option value="DRAFT">Draft</option>
                   <option value="PUBLISHED">Published</option>
                   <option value="ARCHIVED">Archived</option>
                 </select>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-sm font-medium" htmlFor="publishedAt">
-                  Publish date <span className="text-muted-foreground">(optional)</span>
-                </label>
-                <Input
-                  id="publishedAt"
-                  name="publishedAt"
-                  type="datetime-local"
-                  defaultValue={toDateTimeLocal(article?.publishedAt)}
-                />
+                <p className="text-xs leading-5 text-muted-foreground">
+                  The publication time is assigned automatically when the
+                  status changes to Published.
+                </p>
               </div>
 
               <div className="space-y-1 text-sm">
@@ -344,31 +380,29 @@ export function ArticleForm({
             </div>
           </section>
 
-          {showApiNotice ? (
+          {message ? (
             <div
-              className="rounded-xl border border-primary/25 bg-primary/10 p-4 text-sm"
-              role="status"
+              className={message.type === "error" ? "rounded-xl border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive" : "rounded-xl border border-primary/25 bg-primary/10 p-4 text-sm"}
+              role={message.type === "error" ? "alert" : "status"}
             >
               <div className="flex gap-2">
                 <Info className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
-                <p>
-                  Article APIs are not connected yet. The form is complete, but
-                  no data was saved.
-                </p>
+                <p>{message.text}</p>
               </div>
             </div>
           ) : null}
 
           <div className="grid gap-2">
-            <Button type="submit" size="lg">
-              <Check aria-hidden="true" />
-              {article ? "Update article" : "Create article"}
+            <Button type="submit" size="lg" value="selected-status" disabled={isSubmitting || categories.length === 0}>
+              {isSubmitting ? <LoaderCircle className="animate-spin" aria-hidden="true" /> : <Check aria-hidden="true" />}
+              {isSubmitting ? "Saving…" : article ? "Update article" : "Create article"}
             </Button>
             <Button
               type="submit"
               size="lg"
               variant="outline"
-              className={cn(showApiNotice && "border-primary/40")}
+              value="draft"
+              disabled={isSubmitting || categories.length === 0}
             >
               <Save aria-hidden="true" />
               Save as draft

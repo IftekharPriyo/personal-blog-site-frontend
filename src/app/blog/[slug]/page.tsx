@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { PostMeta } from "@/components/blog/post-meta";
 import { PostTags } from "@/components/blog/post-tags";
 import { Container } from "@/components/shared/container";
-import { getAllPosts, getPostBySlug } from "@/lib/blog";
+import { getPostBySlug } from "@/lib/blog";
 
 type BlogPostPageProps = {
   params: Promise<{ slug: string }>;
@@ -39,14 +39,6 @@ export async function generateMetadata({
   };
 }
 
-export async function generateStaticParams() {
-  const posts = await getAllPosts();
-
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
-}
-
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
@@ -68,6 +60,17 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <div className="mt-7">
           <PostTags tags={post.tags} />
         </div>
+        {post.coverImage ? (
+          <figure className="mt-10 overflow-hidden rounded-xl border border-border bg-card">
+            {/* Cover URLs are managed by the administrator and may use different hosts. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={post.coverImage}
+              alt={`Cover image for ${post.title}`}
+              className="aspect-[16/9] w-full object-cover"
+            />
+          </figure>
+        ) : null}
         <div className="mdx-content mt-14">{post.content}</div>
       </article>
     </Container>

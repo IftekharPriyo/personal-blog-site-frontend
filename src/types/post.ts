@@ -5,6 +5,7 @@ export interface BlogPostMeta {
   date: string;
   readingTime: string;
   tags: string[];
+  coverImage?: string | null;
   featured?: boolean;
   seoTitle?: string;
   seoDescription?: string;
