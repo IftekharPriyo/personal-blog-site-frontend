@@ -1,0 +1,30 @@
+---
+title: "What I Track While Learning Cloud Infrastructure"
+excerpt: "A practical checklist for turning AWS, networking, and deployment practice into repeatable engineering notes."
+date: "2026-05-20"
+tags:
+  - Cloud
+  - AWS
+---
+
+Cloud learning gets easier when practice leaves a trail. Every lab, deployment,
+and broken environment can become a useful note if the structure is consistent.
+
+## The Notes That Matter
+
+When I work through infrastructure practice, I try to capture four things:
+
+1. What I intended to build.
+2. Which services and permissions were involved.
+3. What failed or surprised me.
+4. How I would repeat the setup next time.
+
+That creates a personal reference system instead of a folder full of screenshots.
+
+```bash
+aws sts get-caller-identity
+aws ec2 describe-vpcs --output table
+```
+
+Small command snippets are often more useful than long explanations because they
+make the next session easier to restart.

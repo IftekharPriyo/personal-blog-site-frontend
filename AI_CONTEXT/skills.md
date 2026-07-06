@@ -35,6 +35,21 @@ The website should feel like:
 - an engineer’s personal publication,
 - not a startup landing page.
 
+The design direction should follow a warm editorial aesthetic.
+
+The platform should feel:
+- calm,
+- thoughtful,
+- minimal,
+- comfortable for long reading sessions.
+
+The visual identity should resemble:
+- a modern digital journal,
+- an engineering publication,
+- a personal archive.
+
+Travel photography and personal experiences may later become part of the platform aesthetic.
+
 ---
 
 # Tech Stack
@@ -74,6 +89,11 @@ The website should feel like:
 - Maintain clean folder organization
 - Follow accessibility best practices
 - Optimize for performance and SEO
+- spacing,
+- typography,
+- contrast,
+- prose styling,
+- and visual rhythm
 
 ---
 
@@ -104,6 +124,7 @@ Do not overload the homepage with:
 - Typography-focused
 - Professional
 - Content-first
+- Warm editorial aesthetic
 - Dark mode first
 
 ## Layout
