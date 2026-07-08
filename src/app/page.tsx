@@ -43,7 +43,7 @@ export default async function Home() {
       <section className="mt-16 sm:mt-20" aria-labelledby="latest-posts">
         <div className="mb-6 flex items-end justify-between gap-4">
           <div>
-            <p className="text-sm text-primary">Latest writing</p>
+            <p className="text-sm text-primary">Latest writings</p>
             <h2 id="latest-posts" className="mt-1 text-2xl font-semibold">
               Recent posts
             </h2>
