@@ -19,6 +19,41 @@ interface ArticleFormProps {
 const selectClassName =
   "h-10 w-full rounded-lg border border-input bg-background px-3 text-sm text-foreground outline-none focus:border-ring focus:ring-2 focus:ring-ring/20";
 
+function delay(milliseconds: number) {
+  return new Promise((resolve) => window.setTimeout(resolve, milliseconds));
+}
+
+function withCacheBuster(url: string) {
+  const separator = url.includes("?") ? "&" : "?";
+  return `${url}${separator}preview=${Date.now()}`;
+}
+
+function preloadImage(url: string) {
+  return new Promise<string>((resolve, reject) => {
+    const image = new Image();
+    const previewUrl = withCacheBuster(url);
+
+    image.onload = () => resolve(previewUrl);
+    image.onerror = reject;
+    image.src = previewUrl;
+  });
+}
+
+async function waitForImage(url: string) {
+  const attempts = 15;
+
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    try {
+      return await preloadImage(url);
+    } catch {
+      if (attempt === attempts - 1) throw new Error("Image is not ready yet");
+      await delay(1000);
+    }
+  }
+
+  throw new Error("Image is not ready yet");
+}
+
 function toSlug(value: string) {
   return value
     .toLowerCase()
@@ -37,12 +72,15 @@ export function ArticleForm({
   const [title, setTitle] = useState(article?.title ?? "");
   const [slug, setSlug] = useState(article?.slug ?? "");
   const [coverImage, setCoverImage] = useState(article?.coverImage ?? "");
+  const [coverPreviewUrl, setCoverPreviewUrl] = useState(article?.coverImage ?? "");
+  const [coverPreviewError, setCoverPreviewError] = useState("");
   const [status, setStatus] = useState<ArticleStatus>(article?.status ?? "DRAFT");
   const [slugWasEdited, setSlugWasEdited] = useState(Boolean(article));
   const [message, setMessage] = useState<{ type: "error" | "success"; text: string } | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [coverFile, setCoverFile] = useState<File | null>(null);
   const [isUploadingCover, setIsUploadingCover] = useState(false);
+  const [isCoverProcessing, setIsCoverProcessing] = useState(false);
   const [selectedTagIds, setSelectedTagIds] = useState(
     () => new Set(article?.tags.map((tag) => tag.id) ?? []),
   );
@@ -121,6 +159,8 @@ export function ArticleForm({
     uploadData.append("image", coverFile);
 
     setIsUploadingCover(true);
+    setIsCoverProcessing(false);
+    setCoverPreviewError("");
     try {
       const response = await fetch("/api/admin/uploads/cover-image", {
         method: "POST",
@@ -137,14 +177,34 @@ export function ArticleForm({
       }
 
       setCoverImage(data.url);
+      setCoverPreviewUrl("");
+      setIsCoverProcessing(true);
       setMessage({
         type: "success",
-        text: "Cover image uploaded. Save the article to store this URL.",
+        text: "Cover image uploaded. Waiting for the optimized preview...",
       });
+
+      try {
+        const previewUrl = await waitForImage(data.url);
+        setCoverPreviewUrl(previewUrl);
+        setMessage({
+          type: "success",
+          text: "Cover image optimized. Save the article to store this URL.",
+        });
+      } catch {
+        setCoverPreviewError(
+          "Cover uploaded, but the optimized preview is not ready yet. You can still save the article and refresh shortly.",
+        );
+        setMessage({
+          type: "success",
+          text: "Cover image uploaded. The optimized preview is still processing.",
+        });
+      }
     } catch {
       setMessage({ type: "error", text: "The upload service is unavailable. Please try again." });
     } finally {
       setIsUploadingCover(false);
+      setIsCoverProcessing(false);
     }
   }
 
@@ -269,7 +329,11 @@ export function ArticleForm({
                 name="coverImage"
                 type="url"
                 value={coverImage}
-                onChange={(event) => setCoverImage(event.target.value)}
+                onChange={(event) => {
+                  setCoverImage(event.target.value);
+                  setCoverPreviewUrl(event.target.value);
+                  setCoverPreviewError("");
+                }}
                 placeholder="https://example.com/image.jpg"
               />
               <p className="text-xs leading-5 text-muted-foreground">
@@ -310,13 +374,32 @@ export function ArticleForm({
 
             {coverImage ? (
               <div className="mt-5 overflow-hidden rounded-lg border border-border bg-background">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={coverImage}
-                  alt="Cover image preview"
-                  className="aspect-video w-full object-cover"
-                />
+                {isCoverProcessing ? (
+                  <div className="flex aspect-video items-center justify-center gap-2 text-sm text-muted-foreground">
+                    <LoaderCircle className="size-4 animate-spin" aria-hidden="true" />
+                    Optimizing cover preview...
+                  </div>
+                ) : coverPreviewUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={coverPreviewUrl}
+                    alt="Cover image preview"
+                    className="aspect-video w-full object-cover"
+                    onError={() =>
+                      setCoverPreviewError("Unable to load the cover preview from this URL.")
+                    }
+                  />
+                ) : (
+                  <div className="flex aspect-video items-center justify-center text-sm text-muted-foreground">
+                    Preview will appear after the optimized image is ready.
+                  </div>
+                )}
               </div>
+            ) : null}
+            {coverPreviewError ? (
+              <p className="mt-2 text-xs leading-5 text-muted-foreground">
+                {coverPreviewError}
+              </p>
             ) : null}
           </section>
         </div>
