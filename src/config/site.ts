@@ -1,8 +1,8 @@
 export const siteConfig = {
-  name: "Personal Blog Site",
+  name: "DevLog",
   url: "http://localhost:3000",
   description:
-    "A writing-focused technical blog about cloud, DevOps, cybersecurity, and software engineering.",
+    "A technical journal about cloud, DevOps, cybersecurity, and software engineering.",
   navItems: [
     { label: "Home", href: "/" },
     { label: "Blog", href: "/blog" },
