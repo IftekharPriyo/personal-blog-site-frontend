@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { PageTransition } from "@/components/layout/page-transition";
 import { ThemeProvider } from "@/components/layout/theme-provider";
 import { siteConfig } from "@/config/site";
 import "./globals.css";
@@ -68,7 +69,9 @@ export default function RootLayout({
         >
           <div className="flex min-h-screen flex-col">
             <SiteHeader />
-            <main className="flex-1">{children}</main>
+            <main className="flex-1">
+              <PageTransition>{children}</PageTransition>
+            </main>
             <SiteFooter />
           </div>
         </ThemeProvider>

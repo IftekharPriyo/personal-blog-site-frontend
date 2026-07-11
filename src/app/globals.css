@@ -143,6 +143,10 @@
   [data-scroll-container] {
     scroll-behavior: auto;
   }
+
+  .animate-fade-in {
+    animation: none;
+  }
 }
 
 @layer utilities {
