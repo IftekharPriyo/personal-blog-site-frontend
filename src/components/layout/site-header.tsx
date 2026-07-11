@@ -11,7 +11,7 @@ export function SiteHeader() {
           href="/"
           className="text-sm font-semibold transition-colors hover:text-primary"
         >
-          The Journal
+          {siteConfig.name}
         </Link>
         <div className="flex items-center gap-2">
           <nav
