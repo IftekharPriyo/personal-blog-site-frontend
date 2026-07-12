@@ -31,7 +31,7 @@ export default async function Home() {
         <section className="mt-16 sm:mt-20" aria-labelledby="featured-post">
           <div className="mb-6 flex items-end justify-between gap-4">
             <div>
-              <p className="text-sm text-primary">Start here</p>
+              <p className="text-sm text-primary">Featured</p>
               <h2 id="featured-post" className="mt-1 text-2xl font-semibold">
                 Start here
               </h2>
