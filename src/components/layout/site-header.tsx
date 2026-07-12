@@ -9,7 +9,7 @@ export function SiteHeader() {
       <Container className="flex min-h-16 items-center justify-between gap-4 py-3.5">
         <Link
           href="/"
-          className="text-sm font-semibold transition-colors hover:text-primary"
+          className="text-lg font-semibold tracking-tight transition-colors hover:text-primary"
         >
           {siteConfig.name}
         </Link>
