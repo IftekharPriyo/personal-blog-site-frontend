@@ -27,17 +27,19 @@ export default async function Home() {
         </p>
       </section>
 
-      <section className="mt-16 sm:mt-20" aria-labelledby="featured-post">
-        <div className="mb-6 flex items-end justify-between gap-4">
-          <div>
-            <p className="text-sm text-primary">Start here</p>
-            <h2 id="featured-post" className="mt-1 text-2xl font-semibold">
-              Start here
-            </h2>
+      {featuredPost ? (
+        <section className="mt-16 sm:mt-20" aria-labelledby="featured-post">
+          <div className="mb-6 flex items-end justify-between gap-4">
+            <div>
+              <p className="text-sm text-primary">Start here</p>
+              <h2 id="featured-post" className="mt-1 text-2xl font-semibold">
+                Start here
+              </h2>
+            </div>
           </div>
-        </div>
-        {featuredPost ? <FeaturedPost post={featuredPost} /> : null}
-      </section>
+          <FeaturedPost post={featuredPost} />
+        </section>
+      ) : null}
 
       <section className="mt-16 sm:mt-20" aria-labelledby="latest-posts">
         <div className="mb-6 flex items-end justify-between gap-4">
