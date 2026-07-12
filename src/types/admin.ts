@@ -8,6 +8,7 @@ export interface AdminArticle {
   content: string;
   coverImage: string | null;
   status: ArticleStatus;
+  featured: boolean;
   author: {
     id: string;
     name: string;
@@ -32,6 +33,7 @@ export interface ArticleRequestBody {
   content: string;
   coverImage?: string | null;
   status: ArticleStatus;
+  featured: boolean;
   categoryId: string;
   tagIds: string[];
   newTags: string[];

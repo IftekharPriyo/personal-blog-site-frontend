@@ -75,6 +75,7 @@ export function ArticleForm({
   const [coverPreviewUrl, setCoverPreviewUrl] = useState(article?.coverImage ?? "");
   const [coverPreviewError, setCoverPreviewError] = useState("");
   const [status, setStatus] = useState<ArticleStatus>(article?.status ?? "DRAFT");
+  const [featured, setFeatured] = useState(article?.featured ?? false);
   const [slugWasEdited, setSlugWasEdited] = useState(Boolean(article));
   const [message, setMessage] = useState<{ type: "error" | "success"; text: string } | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -108,6 +109,7 @@ export function ArticleForm({
       content: String(formData.get("content") ?? ""),
       coverImage: normalizedCoverImage || null,
       status: submitter?.value === "draft" ? "DRAFT" : status,
+      featured,
       categoryId: String(formData.get("categoryId") ?? ""),
       tagIds: [...selectedTagIds],
       newTags: customTags,
@@ -436,6 +438,23 @@ export function ArticleForm({
                   Assigned from the authenticated session.
                 </p>
               </div>
+
+              <label className="flex cursor-pointer gap-3 rounded-lg border border-border bg-background/45 p-3 text-sm">
+                <input
+                  className="mt-1 size-4 rounded border-input accent-primary"
+                  type="checkbox"
+                  name="featured"
+                  checked={featured}
+                  onChange={(event) => setFeatured(event.target.checked)}
+                />
+                <span>
+                  <span className="block font-medium">Feature this article</span>
+                  <span className="mt-1 block text-xs leading-5 text-muted-foreground">
+                    Featured published articles are eligible for the Start here
+                    section. The newest featured article appears there.
+                  </span>
+                </span>
+              </label>
             </div>
           </section>
 

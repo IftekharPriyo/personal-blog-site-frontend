@@ -13,6 +13,7 @@ interface ApiPost {
   slug: string;
   excerpt: string | null;
   coverImage: string | null;
+  featured?: boolean;
   content?: string;
   publishedAt: string | null;
   updatedAt: string;
@@ -29,6 +30,7 @@ function toPostMeta(post: ApiPost): BlogPostMeta {
     readingTime: post.readingTime,
     tags: post.tags.map((tag) => tag.name),
     coverImage: post.coverImage,
+    featured: post.featured ?? false,
   };
 }
 
@@ -44,12 +46,18 @@ export const getAllPosts = cache(async (): Promise<BlogPostMeta[]> => {
 
 export const getFeaturedPost = cache(async () => {
   const posts = await getAllPosts();
-  return posts[0];
+  return posts.find((post) => post.featured) ?? null;
 });
 
 export const getLatestPosts = cache(async (limit = 3) => {
   const posts = await getAllPosts();
-  return posts.slice(1, limit + 1);
+  const featuredPost = await getFeaturedPost();
+  const postsWithoutFeatured = featuredPost
+    ? posts.filter((post) => post.slug !== featuredPost.slug)
+    : posts;
+  const candidates = postsWithoutFeatured.length > 0 ? postsWithoutFeatured : posts;
+
+  return candidates.slice(0, limit);
 });
 
 export const getAllTags = cache(async () => {
