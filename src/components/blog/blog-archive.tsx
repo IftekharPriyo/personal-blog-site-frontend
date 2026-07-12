@@ -21,12 +21,14 @@ export function BlogArchive({ posts, topics }: BlogArchiveProps) {
       <section aria-labelledby="all-posts-heading">
         <div className="mb-5 flex items-end justify-between gap-4 border-b border-border/70 pb-4">
           <div>
-            <p className="text-sm text-primary">All writing</p>
+            <p className="font-mono text-xs uppercase tracking-[0.14em] text-primary">
+              {"// All writing"}
+            </p>
             <h2 id="all-posts-heading" className="mt-1 text-2xl font-semibold">
               Notes and essays
             </h2>
           </div>
-          <p className="shrink-0 text-sm text-muted-foreground">
+          <p className="shrink-0 font-mono text-xs uppercase tracking-wide text-muted-foreground">
             {posts.length} {posts.length === 1 ? "post" : "posts"}
           </p>
         </div>

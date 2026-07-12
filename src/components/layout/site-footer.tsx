@@ -4,7 +4,7 @@ import { siteConfig } from "@/config/site";
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border/60">
+    <footer className="relative z-10 bg-transparent backdrop-blur-md">
       <Container className="flex flex-col gap-4 py-8 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
         <p>
           Copyright {new Date().getFullYear()} {siteConfig.name}. Built for

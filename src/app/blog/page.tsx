@@ -16,8 +16,8 @@ export default async function BlogPage() {
   return (
     <Container className="py-12 sm:py-16 lg:py-20">
       <header className="max-w-3xl">
-        <p className="text-sm font-medium uppercase text-primary">
-          Archive
+        <p className="font-mono text-xs font-medium uppercase tracking-[0.16em] text-primary">
+          {"// Archive"}
         </p>
         <h1 className="mt-4 text-4xl font-semibold leading-[1.12] sm:text-5xl">
           Blog archive

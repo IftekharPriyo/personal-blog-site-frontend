@@ -6,7 +6,7 @@ interface PostMetaProps {
 
 export function PostMeta({ post }: PostMetaProps) {
   return (
-    <p className="text-xs font-medium uppercase text-muted-foreground/75">
+    <p className="font-mono text-[0.7rem] font-medium uppercase tracking-[0.08em] text-muted-foreground/75">
       <time dateTime={post.date}>
         {new Intl.DateTimeFormat("en", {
           month: "short",

@@ -26,7 +26,7 @@ export function FeaturedPost({ post }: FeaturedPostProps) {
             <PostTags tags={post.tags} />
             <Link
               href={`/blog/${post.slug}`}
-              className="inline-flex shrink-0 items-center gap-2 text-sm font-medium text-primary transition-colors hover:text-foreground"
+              className="inline-flex shrink-0 items-center gap-2 font-mono text-xs font-medium uppercase tracking-wide text-primary transition-colors hover:text-foreground"
             >
               Read the post
               <ArrowRight className="size-4" aria-hidden="true" />

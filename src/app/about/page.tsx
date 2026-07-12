@@ -11,7 +11,9 @@ export default function AboutPage() {
   return (
     <Container className="py-12 sm:py-16 lg:py-20">
       <section className="max-w-3xl">
-        <p className="text-sm font-medium uppercase text-primary">About</p>
+        <p className="font-mono text-xs font-medium uppercase tracking-[0.16em] text-primary">
+          {"// About"}
+        </p>
         <h1 className="mt-4 text-4xl font-semibold leading-[1.12] sm:text-5xl">
           Hi, I&apos;m Iftekhar Priyo.
         </h1>
@@ -62,7 +64,9 @@ export default function AboutPage() {
       </section>
 
       <section className="mt-14 max-w-4xl" aria-labelledby="currently">
-        <p className="text-sm font-medium uppercase text-primary">Currently</p>
+        <p className="font-mono text-xs font-medium uppercase tracking-[0.16em] text-primary">
+          {"// Currently"}
+        </p>
         <h2 id="currently" className="mt-3 text-2xl font-semibold">
           Where my attention is going
         </h2>
