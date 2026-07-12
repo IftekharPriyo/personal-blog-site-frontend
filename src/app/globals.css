@@ -147,6 +147,10 @@
   .animate-fade-in {
     animation: none;
   }
+
+  .wordmark-caret {
+    animation: none;
+  }
 }
 
 @layer utilities {
@@ -195,6 +199,21 @@
     @apply border-border/70 bg-secondary/80 text-foreground;
   }
 
+  .typewriter-cursor {
+    display: inline-block;
+    width: 0.12em;
+    height: 1em;
+    margin-left: 0.12em;
+    vertical-align: -0.12em;
+    background: var(--primary);
+    box-shadow: 0 0 8px color-mix(in srgb, var(--primary) 40%, transparent);
+    animation: typewriter-cursor-blink 780ms steps(1, end) infinite;
+  }
+
+  .wordmark-caret {
+    animation: typewriter-cursor-blink 1.1s steps(1, end) infinite;
+  }
+
 }
 
 @keyframes fade-in {
@@ -206,5 +225,11 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes typewriter-cursor-blink {
+  50% {
+    opacity: 0;
   }
 }

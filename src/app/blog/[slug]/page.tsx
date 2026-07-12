@@ -4,6 +4,7 @@ import { PostMeta } from "@/components/blog/post-meta";
 import { PostTags } from "@/components/blog/post-tags";
 import { PostEngagement } from "@/components/blog/post-engagement";
 import { Container } from "@/components/shared/container";
+import { TypewriterTitle } from "@/components/shared/typewriter-title";
 import { getPostBySlug } from "@/lib/blog";
 
 type BlogPostPageProps = {
@@ -52,9 +53,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     <Container className="py-14 sm:py-18 lg:py-24">
       <article className="mx-auto max-w-[44rem]">
         <PostMeta post={post} />
-        <h1 className="mt-5 text-4xl font-semibold leading-[1.12] text-balance sm:text-5xl">
-          {post.title}
-        </h1>
+        <TypewriterTitle
+          key={post.slug}
+          text={post.title}
+          className="mt-5 text-4xl font-semibold leading-[1.12] text-balance sm:text-5xl"
+        />
         <p className="mt-7 text-lg leading-8 text-muted-foreground sm:text-xl sm:leading-9">
           {post.excerpt}
         </p>

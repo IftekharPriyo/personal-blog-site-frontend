@@ -9,9 +9,15 @@ export function SiteHeader() {
       <Container className="flex min-h-16 items-center justify-between gap-4 py-3.5">
         <Link
           href="/"
-          className="text-sm font-semibold transition-colors hover:text-primary"
+          className="font-mono text-lg font-semibold tracking-tight transition-colors hover:text-primary"
         >
+          <span className="text-primary" aria-hidden="true">
+            &gt;
+          </span>{" "}
           {siteConfig.name}
+          <span className="wordmark-caret text-primary" aria-hidden="true">
+            _
+          </span>
         </Link>
         <div className="flex items-center gap-2">
           <nav

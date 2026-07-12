@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/shared/container";
+import { TypewriterTitle } from "@/components/shared/typewriter-title";
 
 export const metadata: Metadata = {
   title: "About",
@@ -12,9 +13,10 @@ export default function AboutPage() {
     <Container className="py-12 sm:py-16 lg:py-20">
       <section className="max-w-3xl">
         <p className="text-sm font-medium uppercase text-primary">About</p>
-        <h1 className="mt-4 text-4xl font-semibold leading-[1.12] sm:text-5xl">
-          Hi, I&apos;m Iftekhar Priyo.
-        </h1>
+        <TypewriterTitle
+          text="Hi, I'm Iftekhar Priyo."
+          className="mt-4 text-4xl font-semibold leading-[1.12] sm:text-5xl"
+        />
       </section>
 
       <section className="mt-8 max-w-3xl space-y-6 text-lg leading-8 text-muted-foreground">
