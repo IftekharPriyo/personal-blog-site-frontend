@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { FeaturedPost } from "@/components/blog/featured-post";
 import { PostCard } from "@/components/blog/post-card";
 import { Container } from "@/components/shared/container";
+import { TypewriterTitle } from "@/components/shared/typewriter-title";
 import { buttonVariants } from "@/components/ui/button";
 import { getFeaturedPost, getLatestPosts } from "@/lib/blog";
 import { cn } from "@/lib/utils";
@@ -17,9 +18,10 @@ export default async function Home() {
         <p className="text-sm font-medium uppercase text-primary">
           Dev Journal
         </p>
-        <h1 className="mt-5 text-4xl font-semibold leading-[1.12] text-balance sm:text-5xl">
-          Tech doesn&apos;t have to be complicated.
-        </h1>
+        <TypewriterTitle
+          text="Tech doesn't have to be complicated."
+          className="mt-5 text-4xl font-semibold leading-[1.12] text-balance sm:text-5xl"
+        />
         <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">
           I write about software engineering, cloud, DevOps, cybersecurity, and
           the lessons I pick up while building real projects. Simple
