@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PostMeta } from "@/components/blog/post-meta";
 import { PostTags } from "@/components/blog/post-tags";
+import { PostEngagement } from "@/components/blog/post-engagement";
 import { Container } from "@/components/shared/container";
 import { getPostBySlug } from "@/lib/blog";
 
@@ -72,6 +73,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </figure>
         ) : null}
         <div className="mdx-content mt-14">{post.content}</div>
+        <PostEngagement
+          initialLoveCount={post.loveCount}
+          initialViewCount={post.viewCount}
+          slug={post.slug}
+        />
       </article>
     </Container>
   );

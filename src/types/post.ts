@@ -7,6 +7,8 @@ export interface BlogPostMeta {
   tags: string[];
   coverImage?: string | null;
   featured: boolean;
+  viewCount: number;
+  loveCount: number;
   seoTitle?: string;
   seoDescription?: string;
 }

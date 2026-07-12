@@ -18,6 +18,8 @@ interface ApiPost {
   publishedAt: string | null;
   updatedAt: string;
   readingTime: string;
+  viewCount?: number;
+  loveCount?: number;
   tags: Array<{ name: string }>;
 }
 
@@ -31,6 +33,8 @@ function toPostMeta(post: ApiPost): BlogPostMeta {
     tags: post.tags.map((tag) => tag.name),
     coverImage: post.coverImage,
     featured: post.featured ?? false,
+    viewCount: post.viewCount ?? 0,
+    loveCount: post.loveCount ?? 0,
   };
 }
 
