@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { PostMeta } from "@/components/blog/post-meta";
 import { PostTags } from "@/components/blog/post-tags";
 import { PostEngagement } from "@/components/blog/post-engagement";
+import { ArticleShare } from "@/components/blog/article-share";
 import { Container } from "@/components/shared/container";
 import { TypewriterTitle } from "@/components/shared/typewriter-title";
 import { siteConfig } from "@/config/site";
@@ -11,6 +12,10 @@ import { getPostBySlug } from "@/lib/blog";
 type BlogPostPageProps = {
   params: Promise<{ slug: string }>;
 };
+
+function getArticleUrl(slug: string) {
+  return new URL(`/blog/${encodeURIComponent(slug)}`, siteConfig.url).toString();
+}
 
 export async function generateMetadata({
   params,
@@ -26,10 +31,7 @@ export async function generateMetadata({
 
   const title = post.seoTitle || post.title;
   const description = post.seoDescription || post.excerpt;
-  const articleUrl = new URL(
-    `/blog/${encodeURIComponent(post.slug)}`,
-    siteConfig.url,
-  ).toString();
+  const articleUrl = getArticleUrl(post.slug);
   const coverImage = post.coverImage
     ? {
         url: new URL(post.coverImage, siteConfig.url).toString(),
@@ -95,6 +97,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </figure>
         ) : null}
         <div className="mdx-content mt-14">{post.content}</div>
+        <ArticleShare
+          description={post.excerpt}
+          title={post.title}
+          url={getArticleUrl(post.slug)}
+        />
         <PostEngagement
           initialLoveCount={post.loveCount}
           initialViewCount={post.viewCount}
