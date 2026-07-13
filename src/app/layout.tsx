@@ -41,6 +41,10 @@ const websiteJsonLd = {
       name: siteConfig.author.name,
       url: siteConfig.author.url,
       jobTitle: siteConfig.author.jobTitle,
+      sameAs: [
+        siteConfig.socialLinks.linkedin,
+        siteConfig.socialLinks.github,
+      ],
       description:
         "Software engineer writing about software engineering, cloud, DevOps, and cybersecurity.",
     },

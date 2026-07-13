@@ -10,21 +10,6 @@ interface PostMetaProps {
 export function PostMeta({ post, showAuthor = false }: PostMetaProps) {
   return (
     <p className="text-xs font-medium uppercase text-muted-foreground/75">
-      {showAuthor ? (
-        <>
-          By{" "}
-          <Link
-            href="/about"
-            rel="author"
-            className="transition-colors hover:text-primary"
-          >
-            {siteConfig.author.name}
-          </Link>
-          <span className="px-2 text-primary/70" aria-hidden="true">
-            /
-          </span>
-        </>
-      ) : null}
       <time dateTime={post.date}>
         {new Intl.DateTimeFormat("en", {
           month: "short",
@@ -36,6 +21,21 @@ export function PostMeta({ post, showAuthor = false }: PostMetaProps) {
         /
       </span>
       {post.readingTime}
+      {showAuthor ? (
+        <>
+          <span className="px-2 text-primary/70" aria-hidden="true">
+            /
+          </span>
+          By{" "}
+          <Link
+            href="/about"
+            rel="author"
+            className="transition-colors hover:text-primary"
+          >
+            {siteConfig.author.name}
+          </Link>
+        </>
+      ) : null}
     </p>
   );
 }

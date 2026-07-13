@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SocialLinks } from "@/components/about/social-links";
 import { Container } from "@/components/shared/container";
 import { JsonLd } from "@/components/shared/json-ld";
 import { TypewriterTitle } from "@/components/shared/typewriter-title";
@@ -86,6 +87,15 @@ export default function AboutPage() {
           explain it to you in just a few minutes.
         </p>
       </section>
+
+      <div className="mt-10 max-w-3xl">
+        <p className="text-sm font-medium uppercase text-primary">
+          Connect with me
+        </p>
+        <div className="mt-4">
+          <SocialLinks />
+        </div>
+      </div>
 
       <section className="mt-14 max-w-4xl" aria-labelledby="currently">
         <p className="text-sm font-medium uppercase text-primary">Currently</p>

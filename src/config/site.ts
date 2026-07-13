@@ -13,6 +13,11 @@ export const siteConfig = {
     jobTitle: "Software Engineer",
     url: `${siteUrl}/about`,
   },
+  socialLinks: {
+    linkedin: "https://www.linkedin.com/in/md-iftekhar-ali/",
+    github: "https://github.com/IftekharPriyo",
+    whatsapp: "https://wa.me/8801521429852",
+  },
   navItems: [
     { label: "Home", href: "/" },
     { label: "Blog", href: "/blog" },
