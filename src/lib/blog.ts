@@ -29,6 +29,7 @@ function toPostMeta(post: ApiPost): BlogPostMeta {
     slug: post.slug,
     excerpt: post.excerpt ?? "",
     date: post.publishedAt ?? post.updatedAt,
+    updatedAt: post.updatedAt,
     readingTime: post.readingTime,
     tags: post.tags.map((tag) => tag.name),
     coverImage: post.coverImage,

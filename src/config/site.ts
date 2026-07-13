@@ -1,11 +1,18 @@
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(
+  /\/$/,
+  "",
+);
+
 export const siteConfig = {
   name: "DevLog",
-  url: (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(
-    /\/$/,
-    "",
-  ),
+  url: siteUrl,
   description:
-    "A technical journal about cloud, DevOps, cybersecurity, and software engineering.",
+    "Iftekhar Priyo's technical journal about software engineering, cloud, DevOps, and cybersecurity.",
+  author: {
+    name: "Iftekhar Priyo",
+    jobTitle: "Software Engineer",
+    url: `${siteUrl}/about`,
+  },
   navItems: [
     { label: "Home", href: "/" },
     { label: "Blog", href: "/blog" },

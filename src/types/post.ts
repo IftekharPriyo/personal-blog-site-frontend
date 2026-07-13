@@ -3,6 +3,7 @@ export interface BlogPostMeta {
   slug: string;
   excerpt: string;
   date: string;
+  updatedAt: string;
   readingTime: string;
   tags: string[];
   coverImage?: string | null;

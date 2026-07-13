@@ -2,12 +2,24 @@ import type { Metadata } from "next";
 import { BlogArchive } from "@/components/blog/blog-archive";
 import { Container } from "@/components/shared/container";
 import { TypewriterTitle } from "@/components/shared/typewriter-title";
+import { siteConfig } from "@/config/site";
 import { getAllPosts, getAllTags } from "@/lib/blog";
 
+const blogUrl = `${siteConfig.url}/blog`;
+const blogDescription =
+  "Technical notes by Iftekhar Priyo about software engineering, cloud, DevOps, and cybersecurity.";
+
 export const metadata: Metadata = {
-  title: "Blog",
-  description:
-    "Technical notes on cloud, DevOps, cybersecurity, and software engineering.",
+  title: "Software Engineering, Cloud & Security Blog",
+  description: blogDescription,
+  alternates: { canonical: blogUrl },
+  openGraph: {
+    title: `Software Engineering, Cloud & Security Blog | ${siteConfig.author.name}`,
+    description: blogDescription,
+    type: "website",
+    url: blogUrl,
+    siteName: siteConfig.name,
+  },
 };
 
 export default async function BlogPage() {
