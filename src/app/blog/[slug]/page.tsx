@@ -5,6 +5,7 @@ import { PostTags } from "@/components/blog/post-tags";
 import { PostEngagement } from "@/components/blog/post-engagement";
 import { Container } from "@/components/shared/container";
 import { TypewriterTitle } from "@/components/shared/typewriter-title";
+import { siteConfig } from "@/config/site";
 import { getPostBySlug } from "@/lib/blog";
 
 type BlogPostPageProps = {
@@ -23,20 +24,38 @@ export async function generateMetadata({
     };
   }
 
+  const title = post.seoTitle || post.title;
+  const description = post.seoDescription || post.excerpt;
+  const articleUrl = new URL(
+    `/blog/${encodeURIComponent(post.slug)}`,
+    siteConfig.url,
+  ).toString();
+  const coverImage = post.coverImage
+    ? {
+        url: new URL(post.coverImage, siteConfig.url).toString(),
+        alt: `Cover image for ${post.title}`,
+      }
+    : null;
+
   return {
-    title: post.seoTitle || post.title,
-    description: post.seoDescription || post.excerpt,
+    title,
+    description,
+    alternates: { canonical: articleUrl },
     openGraph: {
-      title: post.seoTitle || post.title,
-      description: post.seoDescription || post.excerpt,
+      title,
+      description,
       type: "article",
+      url: articleUrl,
+      siteName: siteConfig.name,
       publishedTime: post.date,
       tags: post.tags,
+      images: coverImage ? [coverImage] : undefined,
     },
     twitter: {
       card: "summary_large_image",
-      title: post.seoTitle || post.title,
-      description: post.seoDescription || post.excerpt,
+      title,
+      description,
+      images: coverImage ? [coverImage.url] : undefined,
     },
   };
 }
