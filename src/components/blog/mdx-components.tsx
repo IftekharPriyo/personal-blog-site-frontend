@@ -37,7 +37,7 @@ export const mdxComponents = {
   ),
   p: (props: ComponentPropsWithoutRef<"p">) => (
     <p
-      className="max-w-none leading-8 text-muted-foreground sm:text-lg sm:leading-9"
+      className="max-w-none leading-8 text-foreground/85 sm:text-lg sm:leading-8 lg:text-xl lg:leading-9"
       {...props}
     />
   ),
@@ -54,7 +54,10 @@ export const mdxComponents = {
     />
   ),
   li: (props: ComponentPropsWithoutRef<"li">) => (
-    <li className="pl-2 leading-8 sm:text-lg sm:leading-9" {...props} />
+    <li
+      className="pl-2 leading-8 text-foreground/85 sm:text-lg sm:leading-8 lg:text-xl lg:leading-9"
+      {...props}
+    />
   ),
   blockquote: (props: ComponentPropsWithoutRef<"blockquote">) => (
     <blockquote

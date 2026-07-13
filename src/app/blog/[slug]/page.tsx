@@ -72,7 +72,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   return (
     <Container className="py-14 sm:py-18 lg:py-24">
-      <article className="mx-auto max-w-[44rem]">
+      <article className="mx-auto max-w-[50rem]">
         <PostMeta post={post} />
         <TypewriterTitle
           key={post.slug}
