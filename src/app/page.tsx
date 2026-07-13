@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { FeaturedPost } from "@/components/blog/featured-post";
@@ -7,6 +8,11 @@ import { TypewriterTitle } from "@/components/shared/typewriter-title";
 import { buttonVariants } from "@/components/ui/button";
 import { getFeaturedPost, getLatestPosts } from "@/lib/blog";
 import { cn } from "@/lib/utils";
+import { siteConfig } from "@/config/site";
+
+export const metadata: Metadata = {
+  alternates: { canonical: siteConfig.url },
+};
 
 export default async function Home() {
   const featuredPost = await getFeaturedPost();
