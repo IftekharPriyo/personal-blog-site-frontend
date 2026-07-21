@@ -1,34 +1,52 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ChangeEvent,
+} from "react";
 import { MDXRemote, type MDXRemoteSerializeResult } from "next-mdx-remote";
 import {
   Bold,
   Code2,
   Eye,
   Heading2,
+  ImagePlus,
   Info,
   Italic,
   Link,
   List,
   ListOrdered,
+  LoaderCircle,
   Pencil,
   Quote,
 } from "lucide-react";
 import { mdxComponents } from "@/components/blog/mdx-components";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { waitForImage } from "@/lib/image-readiness";
+import { cn } from "@/lib/utils";
 
 interface MdxEditorProps {
   defaultValue?: string;
 }
 
+const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024;
+const SUPPORTED_IMAGE_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
+
 export function MdxEditor({ defaultValue = "" }: MdxEditorProps) {
+  const imageInputRef = useRef<HTMLInputElement>(null);
   const [content, setContent] = useState(defaultValue);
   const [mode, setMode] = useState<"write" | "preview">("write");
   const [source, setSource] = useState<MDXRemoteSerializeResult | null>(null);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [imageUploadMessage, setImageUploadMessage] = useState<{
+    type: "error" | "success";
+    text: string;
+  } | null>(null);
 
   function insertSyntax(before: string, after: string, placeholder: string) {
     const editor = document.getElementById("content") as HTMLTextAreaElement | null;
@@ -50,6 +68,72 @@ export function MdxEditor({ defaultValue = "" }: MdxEditorProps) {
 
     setContent(editor.value);
     editor.setSelectionRange(start + before.length, start + before.length + selected.length);
+  }
+
+  async function handleImageUpload(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    setImageUploadMessage(null);
+
+    if (!file) return;
+
+    if (!SUPPORTED_IMAGE_TYPES.has(file.type)) {
+      setImageUploadMessage({
+        type: "error",
+        text: "Only JPG, PNG, and WEBP images are supported.",
+      });
+      return;
+    }
+
+    if (file.size > MAX_IMAGE_SIZE_BYTES) {
+      setImageUploadMessage({
+        type: "error",
+        text: "Article images must be 5MB or smaller.",
+      });
+      return;
+    }
+
+    const uploadData = new FormData();
+    uploadData.append("image", file);
+    setIsUploadingImage(true);
+
+    try {
+      const response = await fetch("/api/admin/uploads/article-image", {
+        method: "POST",
+        body: uploadData,
+      });
+      const data = (await response.json()) as { message?: string; url?: string };
+
+      if (!response.ok || !data.url) {
+        setImageUploadMessage({
+          type: "error",
+          text: data.message || "Unable to upload the article image.",
+        });
+        return;
+      }
+
+      let isOptimized = true;
+      try {
+        await waitForImage(data.url);
+      } catch {
+        isOptimized = false;
+      }
+
+      insertSyntax("\n\n![", `](${data.url})\n\n`, "Describe this image");
+      setImageUploadMessage({
+        type: "success",
+        text: isOptimized
+          ? "Image optimized and inserted. Replace the selected text with useful alt text."
+          : "Image inserted, but optimization is still processing. Its preview may take a little longer.",
+      });
+    } catch {
+      setImageUploadMessage({
+        type: "error",
+        text: "The image upload service is unavailable. Please try again.",
+      });
+    } finally {
+      setIsUploadingImage(false);
+    }
   }
 
   const tools = [
@@ -111,6 +195,14 @@ export function MdxEditor({ defaultValue = "" }: MdxEditorProps) {
 
       {mode === "write" ? (
         <div>
+          <input
+            ref={imageInputRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            className="sr-only"
+            tabIndex={-1}
+            onChange={handleImageUpload}
+          />
           <Textarea
             id="content"
             name="content"
@@ -121,7 +213,38 @@ export function MdxEditor({ defaultValue = "" }: MdxEditorProps) {
             maxLength={900000}
             required
           />
+          {imageUploadMessage ? (
+            <p
+              role="status"
+              className={cn(
+                "border-t border-border px-3 py-2 text-xs",
+                imageUploadMessage.type === "error"
+                  ? "text-destructive"
+                  : "text-muted-foreground",
+              )}
+            >
+              {imageUploadMessage.text}
+            </p>
+          ) : null}
           <div className="flex gap-1 overflow-x-auto border-t border-border bg-background p-1.5" role="toolbar" aria-label="Insert MDX formatting">
+            <Button
+              type="button"
+              size="sm"
+              variant="ghost"
+              title="Upload article image"
+              aria-label="Upload article image"
+              disabled={isUploadingImage}
+              onClick={() => imageInputRef.current?.click()}
+            >
+              {isUploadingImage ? (
+                <LoaderCircle className="animate-spin" aria-hidden="true" />
+              ) : (
+                <ImagePlus aria-hidden="true" />
+              )}
+              <span className="hidden lg:inline">
+                {isUploadingImage ? "Uploading" : "Image"}
+              </span>
+            </Button>
             {tools.map((tool) => (
               <Button
                 key={tool.label}

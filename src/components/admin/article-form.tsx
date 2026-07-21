@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { MdxEditor } from "@/components/admin/mdx-editor";
+import { waitForImage } from "@/lib/image-readiness";
 import type { AdminArticle, AdminOption, ArticleRequestBody, ArticleStatus } from "@/types/admin";
 
 interface ArticleFormProps {
@@ -18,41 +19,6 @@ interface ArticleFormProps {
 
 const selectClassName =
   "h-10 w-full rounded-lg border border-input bg-background px-3 text-sm text-foreground outline-none focus:border-ring focus:ring-2 focus:ring-ring/20";
-
-function delay(milliseconds: number) {
-  return new Promise((resolve) => window.setTimeout(resolve, milliseconds));
-}
-
-function withCacheBuster(url: string) {
-  const separator = url.includes("?") ? "&" : "?";
-  return `${url}${separator}preview=${Date.now()}`;
-}
-
-function preloadImage(url: string) {
-  return new Promise<string>((resolve, reject) => {
-    const image = new Image();
-    const previewUrl = withCacheBuster(url);
-
-    image.onload = () => resolve(previewUrl);
-    image.onerror = reject;
-    image.src = previewUrl;
-  });
-}
-
-async function waitForImage(url: string) {
-  const attempts = 15;
-
-  for (let attempt = 0; attempt < attempts; attempt += 1) {
-    try {
-      return await preloadImage(url);
-    } catch {
-      if (attempt === attempts - 1) throw new Error("Image is not ready yet");
-      await delay(1000);
-    }
-  }
-
-  throw new Error("Image is not ready yet");
-}
 
 function toSlug(value: string) {
   return value

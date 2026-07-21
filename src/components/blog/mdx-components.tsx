@@ -41,6 +41,20 @@ export const mdxComponents = {
       {...props}
     />
   ),
+  img: ({ className, alt = "", ...props }: ComponentPropsWithoutRef<"img">) => (
+    // Article images are administrator-managed S3 URLs and may use different hosts.
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      {...props}
+      alt={alt}
+      loading="lazy"
+      decoding="async"
+      className={cn(
+        "my-10 h-auto max-h-[38rem] w-full rounded-xl border border-border/70 bg-card/40 object-contain",
+        className,
+      )}
+    />
+  ),
   ul: (props: ComponentPropsWithoutRef<"ul">) => (
     <ul
       className="ml-5 list-disc space-y-3 text-muted-foreground marker:text-primary/70"
