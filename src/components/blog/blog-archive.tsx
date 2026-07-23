@@ -3,22 +3,27 @@
 import { useState } from "react";
 import { LayoutGrid, List } from "lucide-react";
 import { BlogEmptyState } from "@/components/blog/blog-empty-state";
+import { BlogPagination } from "@/components/blog/blog-pagination";
 import { BlogTopicList } from "@/components/blog/blog-topic-list";
 import { PostCard } from "@/components/blog/post-card";
 import { cn } from "@/lib/utils";
-import type { BlogPostMeta } from "@/types/post";
+import type {
+  BlogPagination as BlogPaginationData,
+  BlogPostMeta,
+} from "@/types/post";
 
 type ArchiveView = "grid" | "list";
 
 interface BlogArchiveProps {
   posts: BlogPostMeta[];
+  pagination: BlogPaginationData;
   topics: Array<{
     name: string;
     count: number;
   }>;
 }
 
-export function BlogArchive({ posts, topics }: BlogArchiveProps) {
+export function BlogArchive({ posts, pagination, topics }: BlogArchiveProps) {
   const [view, setView] = useState<ArchiveView>("grid");
 
   if (posts.length === 0) {
@@ -37,7 +42,8 @@ export function BlogArchive({ posts, topics }: BlogArchiveProps) {
           </div>
           <div className="flex shrink-0 items-center gap-3">
             <p className="text-sm text-muted-foreground">
-              {posts.length} {posts.length === 1 ? "post" : "posts"}
+              {pagination.totalItems}{" "}
+              {pagination.totalItems === 1 ? "post" : "posts"}
             </p>
             <div
               className="hidden rounded-lg border border-border/75 bg-card/60 p-1 sm:flex"
@@ -89,6 +95,7 @@ export function BlogArchive({ posts, topics }: BlogArchiveProps) {
             />
           ))}
         </div>
+        <BlogPagination pagination={pagination} />
       </section>
       <BlogTopicList topics={topics} />
     </div>
