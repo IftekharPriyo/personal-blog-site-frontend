@@ -11,12 +11,12 @@ export function ProjectCard({ project }: ProjectCardProps) {
     <article className="group relative flex h-full flex-col rounded-lg border border-border/75 bg-card/70 p-5 shadow-[0_1px_0_rgba(24,21,18,0.025)] transition-colors hover:border-primary/35 hover:bg-card sm:p-6">
       <div className="flex items-start justify-between gap-4">
         <div className="flex min-w-0 items-start gap-4">
-          <div className="flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-border/70 bg-secondary/70 p-2">
+          <div className="flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-lg">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={project.logo}
               alt=""
-              className="size-full object-contain"
+              className="size-full object-cover"
               aria-hidden="true"
             />
           </div>

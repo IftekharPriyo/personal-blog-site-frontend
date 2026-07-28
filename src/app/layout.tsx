@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { PageTransition } from "@/components/layout/page-transition";
+import { RouteScrollManager } from "@/components/layout/route-scroll-manager";
 import { ThemeProvider } from "@/components/layout/theme-provider";
 import { JsonLd } from "@/components/shared/json-ld";
 import { siteConfig } from "@/config/site";
@@ -107,6 +108,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <RouteScrollManager />
           <div className="flex min-h-screen flex-col">
             <SiteHeader />
             <main className="flex-1">

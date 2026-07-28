@@ -69,12 +69,12 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
               {project.status} / {project.year}
             </p>
             <div className="mt-4 flex flex-col gap-5 sm:flex-row sm:items-center">
-              <div className="flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border/75 bg-secondary/70 p-3">
+              <div className="flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-xl">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={project.logo}
                   alt=""
-                  className="size-full object-contain"
+                  className="size-full object-cover"
                   aria-hidden="true"
                 />
               </div>
