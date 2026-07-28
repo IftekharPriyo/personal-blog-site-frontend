@@ -13,6 +13,10 @@ type ProjectPageProps = {
   params: Promise<{ slug: string }>;
 };
 
+function isExternalHref(href: string) {
+  return /^[a-z][a-z0-9+.-]*:/i.test(href);
+}
+
 export async function generateStaticParams() {
   const projects = await getProjects();
   return projects.map((project) => ({ slug: project.slug }));
@@ -178,7 +182,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 </h3>
                 <div className="mt-3 grid gap-2">
                   {project.links.map((link) => (
-                    <Link
+                    <a
                       key={link.href}
                       href={link.href}
                       target="_blank"
@@ -187,7 +191,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                     >
                       {link.label}
                       <ExternalLink aria-hidden="true" />
-                    </Link>
+                    </a>
                   ))}
                 </div>
               </div>
@@ -195,22 +199,37 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           </aside>
 
           {project.liveLink ? (
-            <Link
-              href={project.liveLink.href}
-              target={project.liveLink.href.startsWith("http") ? "_blank" : undefined}
-              rel={
-                project.liveLink.href.startsWith("http")
-                  ? "noreferrer"
-                  : undefined
-              }
-              className={cn(
-                buttonVariants({ variant: "default", size: "lg" }),
-                "mt-4 w-full",
-              )}
-            >
-              {project.liveLink.label}
-              <ExternalLink aria-hidden="true" />
-            </Link>
+            isExternalHref(project.liveLink.href) ? (
+              <a
+                href={project.liveLink.href}
+                target={
+                  project.liveLink.href.startsWith("http") ? "_blank" : undefined
+                }
+                rel={
+                  project.liveLink.href.startsWith("http")
+                    ? "noreferrer"
+                    : undefined
+                }
+                className={cn(
+                  buttonVariants({ variant: "default", size: "lg" }),
+                  "mt-4 w-full",
+                )}
+              >
+                {project.liveLink.label}
+                <ExternalLink aria-hidden="true" />
+              </a>
+            ) : (
+              <Link
+                href={project.liveLink.href}
+                className={cn(
+                  buttonVariants({ variant: "default", size: "lg" }),
+                  "mt-4 w-full",
+                )}
+              >
+                {project.liveLink.label}
+                <ExternalLink aria-hidden="true" />
+              </Link>
+            )
           ) : null}
         </div>
       </article>

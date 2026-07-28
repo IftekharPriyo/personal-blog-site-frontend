@@ -89,7 +89,7 @@ const projects: Project[] = [
     ],
     liveLink: {
       label: "Request private alpha access",
-      href: "mailto:iftekhar.priyo12345@gmail.com?subject=Sanymar%20private%20alpha%20access&body=Hi%20Iftekhar%2C%0A%0AI%20would%20like%20to%20try%20the%20Sanymar%20private%20alpha.%0A%0AThanks!",
+      href: "https://mail.google.com/mail/?view=cm&fs=1&to=iftekhar.priyo12345@gmail.com&su=Sanymar%20private%20alpha%20access&body=Hi%20Iftekhar%2C%0A%0AI%20would%20like%20to%20try%20the%20Sanymar%20private%20alpha.%0A%0AThanks!",
     },
   },
   {
