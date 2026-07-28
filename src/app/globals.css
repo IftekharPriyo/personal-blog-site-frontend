@@ -79,6 +79,9 @@
   --sidebar-accent-foreground: #181512;
   --sidebar-border: #d8cec2;
   --sidebar-ring: #9b7653;
+  --surface-shadow:
+    0 12px 30px rgba(24, 21, 18, 0.055),
+    0 1px 0 rgba(24, 21, 18, 0.035);
 }
 
 .dark {
@@ -113,6 +116,7 @@
   --sidebar-accent-foreground: #f2ece6;
   --sidebar-border: #3a312c;
   --sidebar-ring: #b08968;
+  --surface-shadow: none;
 }
 
 @layer base {
@@ -213,6 +217,13 @@
 
   .wordmark-caret {
     animation: typewriter-cursor-blink 1.1s steps(1, end) infinite;
+  }
+
+  html:not(.dark)
+    :where(article, aside, section, div, figure)[class*="rounded"][class*="border"][class*="bg-card"],
+  html:not(.dark)
+    :where(article, aside, section, div, figure)[class*="rounded"][class*="border"][class*="bg-secondary"] {
+    box-shadow: var(--surface-shadow);
   }
 
 }
