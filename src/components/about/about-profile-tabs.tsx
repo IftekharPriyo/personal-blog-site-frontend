@@ -203,9 +203,13 @@ function Timeline({
             aria-hidden="true"
             className="absolute left-0 top-2 size-3 rounded-full border border-primary bg-background shadow-[0_0_0_4px_color-mix(in_srgb,var(--primary)_14%,transparent)]"
           />
-          <h3 className="text-xl font-semibold text-foreground">{item.title}</h3>
-          <p className="text-sm text-primary">{item.meta}</p>
-          <p className="mt-2 max-w-2xl leading-7 text-muted-foreground">
+          <h3 className="text-lg font-semibold text-foreground sm:text-xl">
+            {item.title}
+          </h3>
+          <p className="text-xs leading-5 text-primary sm:text-sm">
+            {item.meta}
+          </p>
+          <p className="mt-2 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
             {item.description}
           </p>
         </div>
@@ -253,7 +257,7 @@ function TechStackGrid() {
                 {items.map((item) => (
                   <div
                     key={item.name}
-                    className="flex items-center gap-3 rounded-md bg-secondary/45 px-3.5 py-3 text-base text-muted-foreground"
+                    className="flex items-center gap-3 rounded-md bg-secondary/45 px-3.5 py-3 text-sm text-muted-foreground sm:text-base"
                   >
                     <TechIcon item={item} />
                     {item.name}
@@ -274,13 +278,13 @@ export function AboutProfileTabs() {
   );
 
   return (
-    <section className="mt-10 grid gap-8 lg:grid-cols-[minmax(0,1fr)_16rem] lg:items-start">
-      <div className="max-w-3xl">
+    <section className="mt-8 grid gap-7 lg:mt-10 lg:grid-cols-[minmax(0,1fr)_16rem] lg:items-start lg:gap-8">
+      <div className="order-2 min-w-0 max-w-3xl lg:order-1">
         <div key={activeSectionId} className="animate-section-change">
           {activeSectionId === "about" ? (
             <div>
               <p className="text-sm font-medium uppercase text-primary">About</p>
-              <div className="mt-5 space-y-6 text-lg leading-8 text-muted-foreground">
+              <div className="mt-5 space-y-5 text-base leading-7 text-muted-foreground sm:space-y-6 sm:text-lg sm:leading-8">
                 <p>
                   I am a software engineer with 5 years of professional
                   experience delivering production-grade web, mobile, content
@@ -311,7 +315,7 @@ export function AboutProfileTabs() {
           {activeSectionId === "career" ? (
             <div>
               <p className="text-sm font-medium uppercase text-primary">Career</p>
-              <h2 className="mt-3 text-2xl font-semibold">
+              <h2 className="mt-3 text-xl font-semibold sm:text-2xl">
                 A practical engineering path.
               </h2>
               <Timeline items={careerTimeline} />
@@ -323,7 +327,7 @@ export function AboutProfileTabs() {
               <p className="text-sm font-medium uppercase text-primary">
                 Education
               </p>
-              <h2 className="mt-3 text-2xl font-semibold">
+              <h2 className="mt-3 text-xl font-semibold sm:text-2xl">
                 Structured study and hands-on learning.
               </h2>
               <Timeline items={educationTimeline} />
@@ -335,10 +339,10 @@ export function AboutProfileTabs() {
               <p className="text-sm font-medium uppercase text-primary">
                 Tech Stack
               </p>
-              <h2 className="mt-3 text-2xl font-semibold">
+              <h2 className="mt-3 text-xl font-semibold sm:text-2xl">
                 Tools I use to build and learn.
               </h2>
-              <p className="mt-5 text-lg leading-8 text-muted-foreground">
+              <p className="mt-5 text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
                 My current focus sits around web engineering, backend
                 architecture, cloud infrastructure, DevOps, system design, and
                 cybersecurity.
@@ -352,10 +356,10 @@ export function AboutProfileTabs() {
               <p className="text-sm font-medium uppercase text-primary">
                 Currently
               </p>
-              <h2 className="mt-3 text-2xl font-semibold">
+              <h2 className="mt-3 text-xl font-semibold sm:text-2xl">
                 Where my attention is going.
               </h2>
-              <div className="mt-5 space-y-6 text-lg leading-8 text-muted-foreground">
+              <div className="mt-5 space-y-5 text-base leading-7 text-muted-foreground sm:space-y-6 sm:text-lg sm:leading-8">
                 <p>
                   I am learning cloud engineering, AWS, DevOps, cybersecurity,
                   and system design through hands-on projects.
@@ -376,9 +380,9 @@ export function AboutProfileTabs() {
 
       <nav
         aria-label="About sections"
-        className="rounded-xl border border-border bg-secondary/70 p-2 lg:sticky lg:top-24"
+        className="order-1 min-w-0 rounded-xl border border-border bg-secondary/70 p-2 lg:sticky lg:top-24 lg:order-2"
       >
-        <div className="flex gap-1 overflow-x-auto lg:grid">
+        <div className="flex gap-1 overflow-x-auto [scrollbar-width:none] lg:grid [&::-webkit-scrollbar]:hidden">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = item.id === activeSectionId;
@@ -390,7 +394,7 @@ export function AboutProfileTabs() {
                 aria-pressed={isActive}
                 onClick={() => setActiveSectionId(item.id)}
                 className={cn(
-                  "flex min-w-max items-center gap-2 rounded-lg px-3 py-2.5 text-left text-sm font-medium text-muted-foreground transition-colors hover:bg-card/70 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring lg:min-w-0",
+                  "flex shrink-0 items-center gap-2 rounded-lg px-3 py-2.5 text-left text-sm font-medium text-muted-foreground transition-colors hover:bg-card/70 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring lg:w-full lg:shrink lg:min-w-0",
                   isActive &&
                     "bg-card text-foreground shadow-[0_1px_2px_rgba(24,21,18,0.08)]",
                 )}
