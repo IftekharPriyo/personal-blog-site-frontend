@@ -26,7 +26,6 @@ const projects: Project[] = [
       "PostgreSQL",
       "AWS S3",
       "AWS Lambda",
-      "PM2",
       "GitHub Actions",
     ],
     highlights: [

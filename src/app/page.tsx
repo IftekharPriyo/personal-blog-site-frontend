@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { FeaturedPost } from "@/components/blog/featured-post";
+import { HeroKicker } from "@/components/home/hero-kicker";
 import { PostCard } from "@/components/blog/post-card";
 import { Container } from "@/components/shared/container";
 import { TypewriterTitle } from "@/components/shared/typewriter-title";
@@ -21,17 +22,16 @@ export default async function Home() {
   return (
     <Container className="py-14 sm:py-16 lg:py-20">
       <section className="max-w-3xl">
-        <p className="text-sm font-medium uppercase text-primary">
-          Dev Journal
-        </p>
+        <HeroKicker />
         <TypewriterTitle
           text={"Tech doesn't have to be\ncomplicated."}
           className="mt-5 whitespace-normal text-4xl font-semibold leading-[1.08] sm:whitespace-pre-line sm:text-5xl lg:text-6xl"
         />
-        <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">
+        <p className="mt-6 max-w-3xl text-lg leading-8 text-muted-foreground">
           I write about software engineering, cloud, DevOps, cybersecurity, and
-          the lessons I pick up while building real projects. Simple
-          explanations, real projects, and practical lessons.
+          the lessons I pick up while building real projects and practical
+          solutions for society and the dev community. Simple explanations, real
+          projects, and practical lessons.
         </p>
       </section>
 
