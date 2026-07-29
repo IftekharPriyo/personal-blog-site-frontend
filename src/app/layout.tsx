@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
+import { WhoamiMascot } from "@/components/home/whoami-mascot";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { PageTransition } from "@/components/layout/page-transition";
@@ -123,6 +124,7 @@ export default function RootLayout({
             </main>
             <SiteFooter />
           </div>
+          <WhoamiMascot />
         </ThemeProvider>
       </body>
     </html>
