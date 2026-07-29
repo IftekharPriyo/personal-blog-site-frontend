@@ -25,8 +25,8 @@ export default async function Home() {
           Dev Journal
         </p>
         <TypewriterTitle
-          text="Tech doesn't have to be complicated."
-          className="mt-5 text-4xl font-semibold leading-[1.08] text-balance sm:text-5xl lg:text-6xl"
+          text={"Tech doesn't have to be\ncomplicated."}
+          className="mt-5 whitespace-normal text-4xl font-semibold leading-[1.08] sm:whitespace-pre-line sm:text-5xl lg:text-6xl"
         />
         <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">
           I write about software engineering, cloud, DevOps, cybersecurity, and
