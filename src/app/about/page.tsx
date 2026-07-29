@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { AboutProfileTabs } from "@/components/about/about-profile-tabs";
-import { SocialLinks } from "@/components/about/social-links";
 import { Container } from "@/components/shared/container";
 import { JsonLd } from "@/components/shared/json-ld";
 import { TypewriterTitle } from "@/components/shared/typewriter-title";
@@ -46,15 +45,6 @@ export default function AboutPage() {
       </section>
 
       <AboutProfileTabs />
-
-      <div className="mt-10 max-w-3xl">
-        <p className="text-sm font-medium uppercase text-primary">
-          Connect with me
-        </p>
-        <div className="mt-4">
-          <SocialLinks />
-        </div>
-      </div>
     </Container>
   );
 }

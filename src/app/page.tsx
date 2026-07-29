@@ -28,10 +28,11 @@ export default async function Home() {
           text={"Tech doesn't have to be\ncomplicated."}
           className="mt-5 whitespace-normal text-4xl font-semibold leading-[1.08] sm:whitespace-pre-line sm:text-5xl lg:text-6xl"
         />
-        <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">
+        <p className="mt-6 max-w-3xl text-lg leading-8 text-muted-foreground">
           I write about software engineering, cloud, DevOps, cybersecurity, and
-          the lessons I pick up while building real projects. Simple
-          explanations, real projects, and practical lessons.
+          the lessons I pick up while building real projects and practical
+          solutions for society and the dev community. Simple explanations, real
+          projects, and practical lessons.
         </p>
       </section>
 

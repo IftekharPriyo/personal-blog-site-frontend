@@ -6,6 +6,8 @@ import {
   Boxes,
   ChevronDown,
   Cloud,
+  Download,
+  FileText,
   GraduationCap,
   Layers3,
   Sparkles,
@@ -39,6 +41,7 @@ import {
   siTerraform,
   siTypescript,
 } from "simple-icons";
+import { SocialLinks } from "@/components/about/social-links";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -46,6 +49,7 @@ const navItems = [
   { id: "career", label: "Career", icon: BriefcaseBusiness },
   { id: "education", label: "Education", icon: GraduationCap },
   { id: "stack", label: "Tech Stack", icon: Layers3 },
+  { id: "resume", label: "Resume", icon: FileText },
   { id: "currently", label: "Currently", icon: Cloud },
 ] as const;
 
@@ -192,7 +196,10 @@ function Timeline({
   return (
     <div className="mt-7 space-y-0">
       {items.map((item, index) => (
-        <div key={item.title} className="relative grid gap-1 pb-8 pl-8 last:pb-0">
+        <div
+          key={item.title}
+          className="relative grid gap-1 pb-8 pl-8 last:pb-0"
+        >
           {index < items.length - 1 ? (
             <span
               aria-hidden="true"
@@ -272,10 +279,37 @@ function TechStackGrid() {
   );
 }
 
-export function AboutProfileTabs() {
-  const [activeSectionId, setActiveSectionId] = useState<(typeof navItems)[number]["id"]>(
-    "about",
+function ResumeDownload() {
+  return (
+    <div className="rounded-xl border border-border/75 bg-card/60 p-4 sm:p-5">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex gap-3">
+          <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <FileText className="size-5" aria-hidden="true" />
+          </span>
+          <div>
+            <h3 className="font-semibold text-foreground">Resume</h3>
+            <p className="mt-1 text-sm leading-6 text-muted-foreground">
+              Download a copy of my latest resume.
+            </p>
+          </div>
+        </div>
+        <a
+          href="/resume.pdf"
+          download="Md_Iftekhar_Ali_Resume.pdf"
+          className="inline-flex items-center justify-center gap-2 rounded-lg border border-primary/30 bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        >
+          <Download className="size-4" aria-hidden="true" />
+          Download
+        </a>
+      </div>
+    </div>
   );
+}
+
+export function AboutProfileTabs() {
+  const [activeSectionId, setActiveSectionId] =
+    useState<(typeof navItems)[number]["id"]>("about");
 
   return (
     <section className="mt-8 grid gap-7 lg:mt-10 lg:grid-cols-[minmax(0,1fr)_16rem] lg:items-start lg:gap-8">
@@ -283,40 +317,68 @@ export function AboutProfileTabs() {
         <div key={activeSectionId} className="animate-section-change">
           {activeSectionId === "about" ? (
             <div>
-              <p className="text-sm font-medium uppercase text-primary">About</p>
+              <p className="text-sm font-medium uppercase text-primary">
+                About
+              </p>
               <div className="mt-5 space-y-5 text-base leading-7 text-muted-foreground sm:space-y-6 sm:text-lg sm:leading-8">
                 <p>
-                  I am a software engineer with 5 years of professional
-                  experience delivering production-grade web, mobile, content
+                  I am a software engineer with five years of professional
+                  experience building production-grade web, mobile, content
                   management, and API-driven applications for a Japanese software
                   company in a remote, cross-functional environment.
                 </p>
                 <p>
                   I have worked across the full software development lifecycle,
-                  from designing and implementing features to maintaining and
-                  improving live systems.
+                  from designing and delivering new features to maintaining,
+                  improving, and supporting live systems.
                 </p>
                 <p>
-                  Right now I am developing deeper expertise in cloud
-                  infrastructure, DevOps, system design, and cybersecurity through
-                  hands-on projects and technical writing.
+                  I enjoy building open-source software, developer tools, and
+                  practical products that solve real problems. I am particularly
+                  interested in creating technology that benefits society, the
+                  developer community, and students who want to learn with greater
+                  confidence.
                 </p>
                 <p>
-                  DevLog is the public home for that work. It is where I turn
-                  real project lessons into simple, practical write-ups for young
-                  students and early-career developers who want to understand
-                  cloud infrastructure, DevOps practices, backend architecture,
-                  system design, and security without feeling overwhelmed.
+                  I am currently expanding my expertise in cloud
+                  infrastructure, DevOps, system design, and cybersecurity
+                  through hands-on projects, independent learning, and technical
+                  writing.
                 </p>
+                <p>
+                  <span className="text-primary">DevLog</span>{" "}
+                  is where I document that journey. I turn lessons from real
+                  projects into clear, practical articles for students and
+                  early-career developers who want to understand cloud
+                  infrastructure, DevOps, backend architecture, system design,
+                  and security without feeling overwhelmed.
+                </p>
+
+                <p className="text-foreground">
+                  If something took me hours or days to understand, my goal is to
+                  help you understand it in a few minutes.
+                </p>
+              </div>
+              <div className="mt-8 grid gap-6">
+                <div>
+                  <p className="text-sm font-medium uppercase text-primary">
+                    Connect with me
+                  </p>
+                  <div className="mt-4">
+                    <SocialLinks />
+                  </div>
+                </div>
               </div>
             </div>
           ) : null}
 
           {activeSectionId === "career" ? (
             <div>
-              <p className="text-sm font-medium uppercase text-primary">Career</p>
+              <p className="text-sm font-medium uppercase text-primary">
+                Career
+              </p>
               <h2 className="mt-3 text-xl font-semibold sm:text-2xl">
-                A practical engineering path.
+                Professional experience path.
               </h2>
               <Timeline items={careerTimeline} />
             </div>
@@ -328,7 +390,7 @@ export function AboutProfileTabs() {
                 Education
               </p>
               <h2 className="mt-3 text-xl font-semibold sm:text-2xl">
-                Structured study and hands-on learning.
+                Institutional education background.
               </h2>
               <Timeline items={educationTimeline} />
             </div>
@@ -340,7 +402,7 @@ export function AboutProfileTabs() {
                 Tech Stack
               </p>
               <h2 className="mt-3 text-xl font-semibold sm:text-2xl">
-                Tools I use to build and learn.
+                Tools I use to build software and cloud systems.
               </h2>
               <p className="mt-5 text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
                 My current focus sits around web engineering, backend
@@ -348,6 +410,24 @@ export function AboutProfileTabs() {
                 cybersecurity.
               </p>
               <TechStackGrid />
+            </div>
+          ) : null}
+
+          {activeSectionId === "resume" ? (
+            <div>
+              <p className="text-sm font-medium uppercase text-primary">
+                Resume
+              </p>
+              <h2 className="mt-3 text-xl font-semibold sm:text-2xl">
+                A quick snapshot of my work.
+              </h2>
+              <p className="mt-5 text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
+                If you want the concise version of my experience, projects, and
+                technical background, you can download my resume here.
+              </p>
+              <div className="mt-7">
+                <ResumeDownload />
+              </div>
             </div>
           ) : null}
 
@@ -361,16 +441,18 @@ export function AboutProfileTabs() {
               </h2>
               <div className="mt-5 space-y-5 text-base leading-7 text-muted-foreground sm:space-y-6 sm:text-lg sm:leading-8">
                 <p>
-                  I am learning cloud engineering, AWS, DevOps, cybersecurity,
-                  and system design through hands-on projects.
+                  I am expanding my expertise in Cloud Engineering, Security
+                  practices, and System Design through hands-on projects.
                 </p>
                 <p>
-                  I am open to remote part-time, contract, freelance, or suitable
-                  full-time software and cloud-related opportunities.
+                  I am also building open-source software, developer tools, and
+                  practical products for the developer community and broader
+                  society — especially tools that make learning, building, and
+                  everyday problem-solving a little easier.
                 </p>
-                <p className="text-foreground">
-                  If something took me hours or days to truly understand, I hope I
-                  can explain it to you in just a few minutes.
+                <p>
+                  I am open to remote part-time, contract, freelance, or
+                  suitable full-time software and cloud-related opportunities.
                 </p>
               </div>
             </div>
