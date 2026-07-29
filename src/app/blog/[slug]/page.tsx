@@ -148,7 +148,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <TypewriterTitle
             key={post.slug}
             text={post.title}
-            className="mt-5 text-4xl font-semibold leading-[1.12] text-balance sm:text-5xl"
+            className="mt-5 text-4xl font-semibold leading-[1.08] text-balance sm:text-5xl lg:text-6xl"
           />
           <p className="mt-7 text-lg leading-8 text-muted-foreground sm:text-xl sm:leading-9">
             {post.excerpt}
