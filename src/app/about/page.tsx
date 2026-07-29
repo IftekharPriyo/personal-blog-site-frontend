@@ -41,7 +41,7 @@ export default function AboutPage() {
         <p className="font-mono text-sm font-medium text-primary">whoami</p>
         <TypewriterTitle
           text="Hi, I'm Iftekhar Priyo."
-          className="mt-4 text-4xl font-semibold leading-[1.12] sm:text-5xl"
+          className="mt-4 text-4xl font-semibold leading-[1.08] sm:text-5xl lg:text-6xl"
         />
       </section>
 

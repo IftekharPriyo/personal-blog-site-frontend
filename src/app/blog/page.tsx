@@ -74,7 +74,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
         <p className="text-sm font-medium uppercase text-primary">Archive</p>
         <TypewriterTitle
           text="Blog archive"
-          className="mt-4 text-4xl font-semibold leading-[1.12] sm:text-5xl"
+          className="mt-4 text-4xl font-semibold leading-[1.08] sm:text-5xl lg:text-6xl"
         />
         <p className="mt-5 max-w-2xl text-lg leading-8 text-muted-foreground">
           A growing set of practical notes from software engineering, cloud,

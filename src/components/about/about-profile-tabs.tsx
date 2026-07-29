@@ -276,100 +276,102 @@ export function AboutProfileTabs() {
   return (
     <section className="mt-10 grid gap-8 lg:grid-cols-[minmax(0,1fr)_16rem] lg:items-start">
       <div className="max-w-3xl">
-        {activeSectionId === "about" ? (
-          <div>
-            <p className="text-sm font-medium uppercase text-primary">About</p>
-            <div className="mt-5 space-y-6 text-lg leading-8 text-muted-foreground">
-              <p>
-                I am a software engineer with 5 years of professional
-                experience delivering production-grade web, mobile, content
-                management, and API-driven applications for a Japanese software
-                company in a remote, cross-functional environment.
-              </p>
-              <p>
-                I have worked across the full software development lifecycle,
-                from designing and implementing features to maintaining and
-                improving live systems.
-              </p>
-              <p>
-                Right now I am developing deeper expertise in cloud
-                infrastructure, DevOps, system design, and cybersecurity through
-                hands-on projects and technical writing.
-              </p>
-              <p>
-                DevLog is the public home for that work. It is where I turn
-                real project lessons into simple, practical write-ups for young
-                students and early-career developers who want to understand
-                cloud infrastructure, DevOps practices, backend architecture,
-                system design, and security without feeling overwhelmed.
-              </p>
+        <div key={activeSectionId} className="animate-section-change">
+          {activeSectionId === "about" ? (
+            <div>
+              <p className="text-sm font-medium uppercase text-primary">About</p>
+              <div className="mt-5 space-y-6 text-lg leading-8 text-muted-foreground">
+                <p>
+                  I am a software engineer with 5 years of professional
+                  experience delivering production-grade web, mobile, content
+                  management, and API-driven applications for a Japanese software
+                  company in a remote, cross-functional environment.
+                </p>
+                <p>
+                  I have worked across the full software development lifecycle,
+                  from designing and implementing features to maintaining and
+                  improving live systems.
+                </p>
+                <p>
+                  Right now I am developing deeper expertise in cloud
+                  infrastructure, DevOps, system design, and cybersecurity through
+                  hands-on projects and technical writing.
+                </p>
+                <p>
+                  DevLog is the public home for that work. It is where I turn
+                  real project lessons into simple, practical write-ups for young
+                  students and early-career developers who want to understand
+                  cloud infrastructure, DevOps practices, backend architecture,
+                  system design, and security without feeling overwhelmed.
+                </p>
+              </div>
             </div>
-          </div>
-        ) : null}
+          ) : null}
 
-        {activeSectionId === "career" ? (
-          <div>
-            <p className="text-sm font-medium uppercase text-primary">Career</p>
-            <h2 className="mt-3 text-2xl font-semibold">
-              A practical engineering path.
-            </h2>
-            <Timeline items={careerTimeline} />
-          </div>
-        ) : null}
-
-        {activeSectionId === "education" ? (
-          <div>
-            <p className="text-sm font-medium uppercase text-primary">
-              Education
-            </p>
-            <h2 className="mt-3 text-2xl font-semibold">
-              Structured study and hands-on learning.
-            </h2>
-            <Timeline items={educationTimeline} />
-          </div>
-        ) : null}
-
-        {activeSectionId === "stack" ? (
-          <div>
-            <p className="text-sm font-medium uppercase text-primary">
-              Tech Stack
-            </p>
-            <h2 className="mt-3 text-2xl font-semibold">
-              Tools I use to build and learn.
-            </h2>
-            <p className="mt-5 text-lg leading-8 text-muted-foreground">
-              My current focus sits around web engineering, backend
-              architecture, cloud infrastructure, DevOps, system design, and
-              cybersecurity.
-            </p>
-            <TechStackGrid />
-          </div>
-        ) : null}
-
-        {activeSectionId === "currently" ? (
-          <div>
-            <p className="text-sm font-medium uppercase text-primary">
-              Currently
-            </p>
-            <h2 className="mt-3 text-2xl font-semibold">
-              Where my attention is going.
-            </h2>
-            <div className="mt-5 space-y-6 text-lg leading-8 text-muted-foreground">
-              <p>
-                I am learning cloud engineering, AWS, DevOps, cybersecurity,
-                and system design through hands-on projects.
-              </p>
-              <p>
-                I am open to remote part-time, contract, freelance, or suitable
-                full-time software and cloud-related opportunities.
-              </p>
-              <p className="text-foreground">
-                If something took me hours or days to truly understand, I hope I
-                can explain it to you in just a few minutes.
-              </p>
+          {activeSectionId === "career" ? (
+            <div>
+              <p className="text-sm font-medium uppercase text-primary">Career</p>
+              <h2 className="mt-3 text-2xl font-semibold">
+                A practical engineering path.
+              </h2>
+              <Timeline items={careerTimeline} />
             </div>
-          </div>
-        ) : null}
+          ) : null}
+
+          {activeSectionId === "education" ? (
+            <div>
+              <p className="text-sm font-medium uppercase text-primary">
+                Education
+              </p>
+              <h2 className="mt-3 text-2xl font-semibold">
+                Structured study and hands-on learning.
+              </h2>
+              <Timeline items={educationTimeline} />
+            </div>
+          ) : null}
+
+          {activeSectionId === "stack" ? (
+            <div>
+              <p className="text-sm font-medium uppercase text-primary">
+                Tech Stack
+              </p>
+              <h2 className="mt-3 text-2xl font-semibold">
+                Tools I use to build and learn.
+              </h2>
+              <p className="mt-5 text-lg leading-8 text-muted-foreground">
+                My current focus sits around web engineering, backend
+                architecture, cloud infrastructure, DevOps, system design, and
+                cybersecurity.
+              </p>
+              <TechStackGrid />
+            </div>
+          ) : null}
+
+          {activeSectionId === "currently" ? (
+            <div>
+              <p className="text-sm font-medium uppercase text-primary">
+                Currently
+              </p>
+              <h2 className="mt-3 text-2xl font-semibold">
+                Where my attention is going.
+              </h2>
+              <div className="mt-5 space-y-6 text-lg leading-8 text-muted-foreground">
+                <p>
+                  I am learning cloud engineering, AWS, DevOps, cybersecurity,
+                  and system design through hands-on projects.
+                </p>
+                <p>
+                  I am open to remote part-time, contract, freelance, or suitable
+                  full-time software and cloud-related opportunities.
+                </p>
+                <p className="text-foreground">
+                  If something took me hours or days to truly understand, I hope I
+                  can explain it to you in just a few minutes.
+                </p>
+              </div>
+            </div>
+          ) : null}
+        </div>
       </div>
 
       <nav

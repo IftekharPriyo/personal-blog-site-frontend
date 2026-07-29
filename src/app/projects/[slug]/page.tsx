@@ -84,7 +84,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
               </div>
               <TypewriterTitle
                 text={project.title}
-                className="text-4xl font-semibold leading-[1.12] sm:text-5xl"
+                className="text-4xl font-semibold leading-[1.08] sm:text-5xl lg:text-6xl"
               />
             </div>
             <p className="mt-5 text-lg leading-8 text-muted-foreground">
