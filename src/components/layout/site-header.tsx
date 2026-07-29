@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Container } from "@/components/shared/container";
 import { siteConfig } from "@/config/site";
+import { SiteNav } from "./site-nav";
 import { ThemeToggle } from "./theme-toggle";
 
 export function SiteHeader() {
@@ -9,38 +10,23 @@ export function SiteHeader() {
       <Container className="flex min-h-16 items-center justify-between gap-4 py-3.5">
         <Link
           href="/"
-          className="text-sm font-semibold transition-colors hover:text-primary"
+          className="font-mono text-lg font-semibold tracking-tight transition-colors hover:text-primary"
         >
-          The Journal
+          <span className="text-primary" aria-hidden="true">
+            &gt;
+          </span>{" "}
+          {siteConfig.name}
+          <span className="wordmark-caret text-primary" aria-hidden="true">
+            _
+          </span>
         </Link>
         <div className="flex items-center gap-2">
-          <nav
-            aria-label="Primary navigation"
-            className="hidden items-center gap-1 sm:flex"
-          >
-            {siteConfig.navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
+          <SiteNav variant="desktop" />
           <ThemeToggle />
         </div>
       </Container>
-      <Container className="flex gap-1 pb-3 sm:hidden">
-        {siteConfig.navItems.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className="flex-1 rounded-md px-3 py-2 text-center text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
-          >
-            {item.label}
-          </Link>
-        ))}
+      <Container className="sm:hidden">
+        <SiteNav variant="mobile" />
       </Container>
     </header>
   );

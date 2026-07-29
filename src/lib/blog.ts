@@ -6,18 +6,26 @@ import rehypePrettyCode from "rehype-pretty-code";
 import remarkGfm from "remark-gfm";
 import { mdxComponents } from "@/components/blog/mdx-components";
 import { getBackendUrl } from "@/lib/auth";
-import type { BlogPost, BlogPostMeta } from "@/types/post";
+import type { BlogPagination, BlogPost, BlogPostMeta } from "@/types/post";
 
 interface ApiPost {
   title: string;
   slug: string;
   excerpt: string | null;
   coverImage: string | null;
+  featured?: boolean;
   content?: string;
   publishedAt: string | null;
   updatedAt: string;
   readingTime: string;
+  viewCount?: number;
+  loveCount?: number;
   tags: Array<{ name: string }>;
+}
+
+export interface BlogPostsPage {
+  posts: BlogPostMeta[];
+  pagination: BlogPagination;
 }
 
 function toPostMeta(post: ApiPost): BlogPostMeta {
@@ -26,43 +34,92 @@ function toPostMeta(post: ApiPost): BlogPostMeta {
     slug: post.slug,
     excerpt: post.excerpt ?? "",
     date: post.publishedAt ?? post.updatedAt,
+    updatedAt: post.updatedAt,
     readingTime: post.readingTime,
     tags: post.tags.map((tag) => tag.name),
     coverImage: post.coverImage,
+    featured: post.featured ?? false,
+    viewCount: post.viewCount ?? 0,
+    loveCount: post.loveCount ?? 0,
   };
 }
 
-export const getAllPosts = cache(async (): Promise<BlogPostMeta[]> => {
-  const response = await fetch(`${getBackendUrl()}/api/posts`, {
+async function fetchPostsPage({
+  page = 1,
+  limit = 10,
+  featured,
+}: {
+  page?: number;
+  limit?: number;
+  featured?: boolean;
+} = {}): Promise<BlogPostsPage> {
+  const params = new URLSearchParams({
+    page: String(page),
+    limit: String(limit),
+  });
+
+  if (typeof featured === "boolean") {
+    params.set("featured", String(featured));
+  }
+
+  const response = await fetch(`${getBackendUrl()}/api/posts?${params}`, {
     cache: "no-store",
   });
   if (!response.ok) throw new Error("Unable to load published posts");
 
-  const data = (await response.json()) as { posts: ApiPost[] };
-  return data.posts.map(toPostMeta);
+  const data = (await response.json()) as {
+    posts: ApiPost[];
+    pagination: BlogPagination;
+  };
+
+  return {
+    posts: data.posts.map(toPostMeta),
+    pagination: data.pagination,
+  };
+}
+
+export const getPostsPage = cache(fetchPostsPage);
+
+export const getAllPosts = cache(async (): Promise<BlogPostMeta[]> => {
+  const firstPage = await fetchPostsPage({ page: 1, limit: 50 });
+  const allPosts = [...firstPage.posts];
+
+  for (let page = 2; page <= firstPage.pagination.totalPages; page += 1) {
+    const nextPage = await fetchPostsPage({ page, limit: 50 });
+    allPosts.push(...nextPage.posts);
+  }
+
+  return allPosts;
 });
 
 export const getFeaturedPost = cache(async () => {
-  const posts = await getAllPosts();
-  return posts[0];
+  const page = await fetchPostsPage({ page: 1, limit: 1, featured: true });
+  return page.posts[0] ?? null;
 });
 
 export const getLatestPosts = cache(async (limit = 3) => {
-  const posts = await getAllPosts();
-  return posts.slice(1, limit + 1);
+  const page = await fetchPostsPage({ page: 1, limit: limit + 1 });
+  const posts = page.posts;
+  const featuredPost = await getFeaturedPost();
+  const postsWithoutFeatured = featuredPost
+    ? posts.filter((post) => post.slug !== featuredPost.slug)
+    : posts;
+  const candidates = postsWithoutFeatured.length > 0 ? postsWithoutFeatured : posts;
+
+  return candidates.slice(0, limit);
 });
 
 export const getAllTags = cache(async () => {
-  const posts = await getAllPosts();
-  const tags = new Map<string, number>();
-
-  posts.forEach((post) => {
-    post.tags.forEach((tag) => tags.set(tag, (tags.get(tag) ?? 0) + 1));
+  const response = await fetch(`${getBackendUrl()}/api/posts/topics`, {
+    cache: "no-store",
   });
+  if (!response.ok) throw new Error("Unable to load published topics");
 
-  return Array.from(tags.entries())
-    .map(([name, count]) => ({ name, count }))
-    .sort((a, b) => a.name.localeCompare(b.name));
+  const data = (await response.json()) as {
+    topics: Array<{ name: string; count: number }>;
+  };
+
+  return data.topics;
 });
 
 export const getPostBySlug = cache(

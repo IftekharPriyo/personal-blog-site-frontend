@@ -1,17 +1,31 @@
+"use client";
+
+import { useState } from "react";
+import { LayoutGrid, List } from "lucide-react";
 import { BlogEmptyState } from "@/components/blog/blog-empty-state";
+import { BlogPagination } from "@/components/blog/blog-pagination";
 import { BlogTopicList } from "@/components/blog/blog-topic-list";
 import { PostCard } from "@/components/blog/post-card";
-import type { BlogPostMeta } from "@/types/post";
+import { cn } from "@/lib/utils";
+import type {
+  BlogPagination as BlogPaginationData,
+  BlogPostMeta,
+} from "@/types/post";
+
+type ArchiveView = "grid" | "list";
 
 interface BlogArchiveProps {
   posts: BlogPostMeta[];
+  pagination: BlogPaginationData;
   topics: Array<{
     name: string;
     count: number;
   }>;
 }
 
-export function BlogArchive({ posts, topics }: BlogArchiveProps) {
+export function BlogArchive({ posts, pagination, topics }: BlogArchiveProps) {
+  const [view, setView] = useState<ArchiveView>("grid");
+
   if (posts.length === 0) {
     return <BlogEmptyState />;
   }
@@ -26,15 +40,62 @@ export function BlogArchive({ posts, topics }: BlogArchiveProps) {
               Notes and essays
             </h2>
           </div>
-          <p className="shrink-0 text-sm text-muted-foreground">
-            {posts.length} {posts.length === 1 ? "post" : "posts"}
-          </p>
+          <div className="flex shrink-0 items-center gap-3">
+            <p className="text-sm text-muted-foreground">
+              {pagination.totalItems}{" "}
+              {pagination.totalItems === 1 ? "post" : "posts"}
+            </p>
+            <div
+              className="hidden rounded-lg border border-border/75 bg-card/60 p-1 sm:flex"
+              role="group"
+              aria-label="Article layout"
+            >
+              <button
+                type="button"
+                onClick={() => setView("grid")}
+                aria-label="Grid view"
+                aria-pressed={view === "grid"}
+                title="Grid view"
+                className={cn(
+                  "inline-flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                  view === "grid" &&
+                    "bg-secondary text-foreground shadow-[0_1px_2px_rgba(24,21,18,0.08)]",
+                )}
+              >
+                <LayoutGrid className="size-4" aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setView("list")}
+                aria-label="List view"
+                aria-pressed={view === "list"}
+                title="List view"
+                className={cn(
+                  "inline-flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                  view === "list" &&
+                    "bg-secondary text-foreground shadow-[0_1px_2px_rgba(24,21,18,0.08)]",
+                )}
+              >
+                <List className="size-4" aria-hidden="true" />
+              </button>
+            </div>
+          </div>
         </div>
-        <div className="grid gap-4">
+        <div
+          className={cn(
+            "grid gap-4",
+            view === "grid" && "sm:grid-cols-2",
+          )}
+        >
           {posts.map((post) => (
-            <PostCard key={post.slug} post={post} />
+            <PostCard
+              key={post.slug}
+              post={post}
+              variant={view === "grid" ? "compact" : "default"}
+            />
           ))}
         </div>
+        <BlogPagination pagination={pagination} />
       </section>
       <BlogTopicList topics={topics} />
     </div>

@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { Check, Info, LoaderCircle, Plus, Save, X } from "lucide-react";
+import { Check, Info, LoaderCircle, Plus, Save, Upload, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { MdxEditor } from "@/components/admin/mdx-editor";
+import { waitForImage } from "@/lib/image-readiness";
 import type { AdminArticle, AdminOption, ArticleRequestBody, ArticleStatus } from "@/types/admin";
 
 interface ArticleFormProps {
@@ -36,10 +37,17 @@ export function ArticleForm({
   const router = useRouter();
   const [title, setTitle] = useState(article?.title ?? "");
   const [slug, setSlug] = useState(article?.slug ?? "");
+  const [coverImage, setCoverImage] = useState(article?.coverImage ?? "");
+  const [coverPreviewUrl, setCoverPreviewUrl] = useState(article?.coverImage ?? "");
+  const [coverPreviewError, setCoverPreviewError] = useState("");
   const [status, setStatus] = useState<ArticleStatus>(article?.status ?? "DRAFT");
+  const [featured, setFeatured] = useState(article?.featured ?? false);
   const [slugWasEdited, setSlugWasEdited] = useState(Boolean(article));
   const [message, setMessage] = useState<{ type: "error" | "success"; text: string } | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [coverFile, setCoverFile] = useState<File | null>(null);
+  const [isUploadingCover, setIsUploadingCover] = useState(false);
+  const [isCoverProcessing, setIsCoverProcessing] = useState(false);
   const [selectedTagIds, setSelectedTagIds] = useState(
     () => new Set(article?.tags.map((tag) => tag.id) ?? []),
   );
@@ -59,14 +67,15 @@ export function ArticleForm({
     const formData = new FormData(form);
     const submitter = (event.nativeEvent as SubmitEvent).submitter as HTMLButtonElement | null;
     const excerpt = String(formData.get("excerpt") ?? "").trim();
-    const coverImage = String(formData.get("coverImage") ?? "").trim();
+    const normalizedCoverImage = coverImage.trim();
     const payload: ArticleRequestBody = {
       title: String(formData.get("title") ?? ""),
       slug: String(formData.get("slug") ?? ""),
       excerpt: excerpt || null,
       content: String(formData.get("content") ?? ""),
-      coverImage: coverImage || null,
+      coverImage: normalizedCoverImage || null,
       status: submitter?.value === "draft" ? "DRAFT" : status,
+      featured,
       categoryId: String(formData.get("categoryId") ?? ""),
       tagIds: [...selectedTagIds],
       newTags: customTags,
@@ -103,6 +112,67 @@ export function ArticleForm({
       setMessage({ type: "error", text: "The article service is unavailable. Please try again." });
     } finally {
       setIsSubmitting(false);
+    }
+  }
+
+  async function handleCoverUpload() {
+    setMessage(null);
+
+    if (!coverFile) {
+      setMessage({ type: "error", text: "Choose a cover image before uploading." });
+      return;
+    }
+
+    const uploadData = new FormData();
+    uploadData.append("image", coverFile);
+
+    setIsUploadingCover(true);
+    setIsCoverProcessing(false);
+    setCoverPreviewError("");
+    try {
+      const response = await fetch("/api/admin/uploads/cover-image", {
+        method: "POST",
+        body: uploadData,
+      });
+      const data = (await response.json()) as { message?: string; url?: string };
+
+      if (!response.ok || !data.url) {
+        setMessage({
+          type: "error",
+          text: data.message || "Unable to upload cover image.",
+        });
+        return;
+      }
+
+      setCoverImage(data.url);
+      setCoverPreviewUrl("");
+      setIsCoverProcessing(true);
+      setMessage({
+        type: "success",
+        text: "Cover image uploaded. Waiting for the optimized preview...",
+      });
+
+      try {
+        const previewUrl = await waitForImage(data.url);
+        setCoverPreviewUrl(previewUrl);
+        setMessage({
+          type: "success",
+          text: "Cover image optimized. Save the article to store this URL.",
+        });
+      } catch {
+        setCoverPreviewError(
+          "Cover uploaded, but the optimized preview is not ready yet. You can still save the article and refresh shortly.",
+        );
+        setMessage({
+          type: "success",
+          text: "Cover image uploaded. The optimized preview is still processing.",
+        });
+      }
+    } catch {
+      setMessage({ type: "error", text: "The upload service is unavailable. Please try again." });
+    } finally {
+      setIsUploadingCover(false);
+      setIsCoverProcessing(false);
     }
   }
 
@@ -226,10 +296,79 @@ export function ArticleForm({
                 id="coverImage"
                 name="coverImage"
                 type="url"
-                defaultValue={article?.coverImage ?? ""}
+                value={coverImage}
+                onChange={(event) => {
+                  setCoverImage(event.target.value);
+                  setCoverPreviewUrl(event.target.value);
+                  setCoverPreviewError("");
+                }}
                 placeholder="https://example.com/image.jpg"
               />
+              <p className="text-xs leading-5 text-muted-foreground">
+                Paste a URL manually, or upload a new cover image to S3.
+              </p>
             </div>
+
+            <div className="mt-5 space-y-3 rounded-lg border border-border bg-background/45 p-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium" htmlFor="coverUpload">
+                  Upload cover image
+                </label>
+                <Input
+                  id="coverUpload"
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  onChange={(event) => setCoverFile(event.target.files?.[0] ?? null)}
+                />
+                <p className="text-xs leading-5 text-muted-foreground">
+                  Supported formats: JPG, PNG, WEBP. Max size: 5MB. The Lambda
+                  compressor will create the final WEBP image after S3 is configured.
+                </p>
+              </div>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleCoverUpload}
+                disabled={!coverFile || isUploadingCover || isSubmitting}
+              >
+                {isUploadingCover ? (
+                  <LoaderCircle className="animate-spin" aria-hidden="true" />
+                ) : (
+                  <Upload aria-hidden="true" />
+                )}
+                {isUploadingCover ? "Uploading..." : "Upload cover"}
+              </Button>
+            </div>
+
+            {coverImage ? (
+              <div className="mt-5 overflow-hidden rounded-lg border border-border bg-background">
+                {isCoverProcessing ? (
+                  <div className="flex aspect-video items-center justify-center gap-2 text-sm text-muted-foreground">
+                    <LoaderCircle className="size-4 animate-spin" aria-hidden="true" />
+                    Optimizing cover preview...
+                  </div>
+                ) : coverPreviewUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={coverPreviewUrl}
+                    alt="Cover image preview"
+                    className="aspect-video w-full object-cover"
+                    onError={() =>
+                      setCoverPreviewError("Unable to load the cover preview from this URL.")
+                    }
+                  />
+                ) : (
+                  <div className="flex aspect-video items-center justify-center text-sm text-muted-foreground">
+                    Preview will appear after the optimized image is ready.
+                  </div>
+                )}
+              </div>
+            ) : null}
+            {coverPreviewError ? (
+              <p className="mt-2 text-xs leading-5 text-muted-foreground">
+                {coverPreviewError}
+              </p>
+            ) : null}
           </section>
         </div>
 
@@ -265,6 +404,23 @@ export function ArticleForm({
                   Assigned from the authenticated session.
                 </p>
               </div>
+
+              <label className="flex cursor-pointer gap-3 rounded-lg border border-border bg-background/45 p-3 text-sm">
+                <input
+                  className="mt-1 size-4 rounded border-input accent-primary"
+                  type="checkbox"
+                  name="featured"
+                  checked={featured}
+                  onChange={(event) => setFeatured(event.target.checked)}
+                />
+                <span>
+                  <span className="block font-medium">Feature this article</span>
+                  <span className="mt-1 block text-xs leading-5 text-muted-foreground">
+                    Featured published articles are eligible for the Start here
+                    section. The newest featured article appears there.
+                  </span>
+                </span>
+              </label>
             </div>
           </section>
 

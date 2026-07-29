@@ -37,8 +37,22 @@ export const mdxComponents = {
   ),
   p: (props: ComponentPropsWithoutRef<"p">) => (
     <p
-      className="max-w-none leading-8 text-muted-foreground sm:text-lg sm:leading-9"
+      className="max-w-none leading-8 text-foreground/85 sm:text-lg sm:leading-8 lg:text-xl lg:leading-9"
       {...props}
+    />
+  ),
+  img: ({ className, alt = "", ...props }: ComponentPropsWithoutRef<"img">) => (
+    // Article images are administrator-managed S3 URLs and may use different hosts.
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      {...props}
+      alt={alt}
+      loading="lazy"
+      decoding="async"
+      className={cn(
+        "my-10 h-auto max-h-[38rem] w-full rounded-xl border border-border/70 bg-card/40 object-contain",
+        className,
+      )}
     />
   ),
   ul: (props: ComponentPropsWithoutRef<"ul">) => (
@@ -54,7 +68,10 @@ export const mdxComponents = {
     />
   ),
   li: (props: ComponentPropsWithoutRef<"li">) => (
-    <li className="pl-2 leading-8 sm:text-lg sm:leading-9" {...props} />
+    <li
+      className="pl-2 leading-8 text-foreground/85 sm:text-lg sm:leading-8 lg:text-xl lg:leading-9"
+      {...props}
+    />
   ),
   blockquote: (props: ComponentPropsWithoutRef<"blockquote">) => (
     <blockquote

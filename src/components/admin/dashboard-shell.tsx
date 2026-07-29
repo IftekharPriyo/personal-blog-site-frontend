@@ -18,6 +18,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { Button } from "@/components/ui/button";
+import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 
 const navigation = [
@@ -58,7 +59,7 @@ export function DashboardShell({ children, admin }: DashboardShellProps) {
       <div className="flex min-h-[5.3rem] items-center justify-between gap-2 border-b border-sidebar-border px-3 py-4 sm:px-5">
         <div className={cn("min-w-0", isSidebarCollapsed && "lg:hidden")}>
           <p className="text-xs font-medium uppercase tracking-[0.14em] text-sidebar-primary">
-            The Journal
+            {siteConfig.name}
           </p>
           <p className="mt-1.5 text-lg font-semibold">Administration</p>
         </div>
@@ -69,7 +70,7 @@ export function DashboardShell({ children, admin }: DashboardShellProps) {
           )}
           aria-hidden="true"
         >
-          J.
+          D.
         </span>
         <Button
           className="hidden lg:inline-flex"
@@ -201,7 +202,7 @@ export function DashboardShell({ children, admin }: DashboardShellProps) {
             <p className="text-xs uppercase tracking-[0.14em] text-primary">
               Administration
             </p>
-            <p className="mt-0.5 text-sm font-medium">The Journal</p>
+            <p className="mt-0.5 text-sm font-medium">{siteConfig.name}</p>
           </div>
           <Button
             variant="outline"

@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Edit3, Search } from "lucide-react";
+import { Edit3, Search, Star } from "lucide-react";
 import Link from "next/link";
 import { ArticleStatus } from "@/components/admin/article-status";
 import { Input } from "@/components/ui/input";
@@ -84,7 +84,15 @@ export function ArticleList({ articles }: ArticleListProps) {
               {filteredArticles.map((article) => (
                 <tr key={article.id} className="transition-colors hover:bg-secondary/35">
                   <td className="max-w-sm px-5 py-4">
-                    <p className="truncate font-medium">{article.title}</p>
+                    <div className="flex min-w-0 items-center gap-2">
+                      <p className="truncate font-medium">{article.title}</p>
+                      {article.featured ? (
+                        <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-primary/25 bg-primary/10 px-2 py-0.5 text-[0.68rem] font-medium text-primary">
+                          <Star className="size-3" aria-hidden="true" />
+                          Featured
+                        </span>
+                      ) : null}
+                    </div>
                     <p className="mt-1 truncate text-xs text-muted-foreground">
                       /{article.slug}
                     </p>

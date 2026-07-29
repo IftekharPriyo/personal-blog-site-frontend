@@ -14,10 +14,23 @@ export function PostCard({ post, variant = "default" }: PostCardProps) {
   const isCompact = variant === "compact";
 
   return (
-    <article className="group relative rounded-lg border border-border/75 bg-card/70 p-5 shadow-[0_1px_0_rgba(24,21,18,0.025)] transition-colors hover:border-primary/35 hover:bg-card sm:p-6">
+    <article className="group relative overflow-hidden rounded-lg border border-border/75 bg-card/70 shadow-[0_1px_0_rgba(24,21,18,0.025)] transition-colors hover:border-primary/35 hover:bg-card">
+      {post.coverImage ? (
+        <div className="overflow-hidden border-b border-border/70 bg-secondary/50">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={post.coverImage}
+            alt={`Cover image for ${post.title}`}
+            className={cn(
+              "w-full object-cover transition-transform duration-300 group-hover:scale-[1.025]",
+              isCompact ? "aspect-[16/9]" : "aspect-[16/7]",
+            )}
+          />
+        </div>
+      ) : null}
       <div
         className={cn(
-          "grid gap-5",
+          "grid gap-5 p-5 sm:p-6",
           !isCompact && "md:grid-cols-[9rem_1fr] md:gap-6",
         )}
       >
