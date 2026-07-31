@@ -5,6 +5,8 @@ import { Check, Link2, Share2 } from "lucide-react";
 
 interface ArticleShareProps {
   description: string;
+  heading?: string;
+  helperText?: string;
   title: string;
   url: string;
 }
@@ -14,7 +16,13 @@ type CopyStatus = "idle" | "copied" | "error";
 const actionClassName =
   "inline-flex h-8 items-center gap-1.5 rounded-md border border-border/70 bg-background/65 px-2.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/35 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
 
-export function ArticleShare({ description, title, url }: ArticleShareProps) {
+export function ArticleShare({
+  description,
+  heading = "Share this article",
+  helperText = "Send it to someone who might find it useful.",
+  title,
+  url,
+}: ArticleShareProps) {
   const [copyStatus, setCopyStatus] = useState<CopyStatus>("idle");
   const resetTimer = useRef<number | undefined>(undefined);
 
@@ -86,10 +94,10 @@ export function ArticleShare({ description, title, url }: ArticleShareProps) {
     >
       <div>
         <h2 id="share-article-heading" className="text-sm font-semibold">
-          Share this article
+          {heading}
         </h2>
         <p className="mt-1 text-xs text-muted-foreground">
-          Send it to someone who might find it useful.
+          {helperText}
         </p>
       </div>
       <div className="mt-4 flex flex-wrap gap-2 sm:mt-0">

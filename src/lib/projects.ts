@@ -130,6 +130,43 @@ const projects: Project[] = [
       href: "https://marketplace.visualstudio.com/items?itemName=iftekharpriyo.vscode-voice-assistant",
     },
   },
+  {
+    title: "GitQuack",
+    slug: "gitquack",
+    logo: "/projects/gitquack.png",
+    summary:
+      "A local Git learning assistant that helps students build better Git habits from the terminal.",
+    whyItExists:
+      "GitQuack exists especially for students and early learners who are starting to work with Git in a more professional way. I wanted to build a friendly local assistant that helps them form better habits around branch naming, protected branches, and everyday Git practices without making Git feel scary or overly formal.",
+    architecture:
+      "GitQuack is a local CLI developer tool that runs inside common terminal environments such as Git Bash, PowerShell, macOS Terminal, Linux terminals, and the VS Code integrated terminal. It initializes repository-local configuration, installs GitQuack-managed Git hooks, and uses local deterministic rules to guide branch names and warn before direct pushes to protected branches. It does not modify global Git configuration, collect telemetry, or make network requests.",
+    description:
+      "GitQuack is being built as a student-friendly Git companion. The current milestone initializes `.gitquack` configuration, installs repository-local `pre-push` and `post-checkout` hooks, warns before direct pushes to protected branches, and gives friendly branch-name guidance with interactive rename suggestions.",
+    status: "In progress",
+    year: "2026",
+    productType: "CLI developer tool",
+    stack: [
+      "Node.js",
+      "TypeScript",
+      "pnpm",
+      "Git hooks",
+      "Git CLI",
+      "Terminal UX",
+    ],
+    highlights: [
+      "Initializes repository-local GitQuack configuration without touching global Git settings.",
+      "Warns before direct pushes to protected branches such as main, master, and develop.",
+      "Guides students toward professional branch naming conventions after checkout.",
+      "Offers interactive branch rename suggestions in supported terminal sessions.",
+      "Runs locally without telemetry, accounts, or network requests.",
+    ],
+    links: [
+      {
+        label: "GitHub repository",
+        href: "https://github.com/IftekharPriyo/gitquack/tree/develop",
+      },
+    ],
+  },
 ];
 
 export const getProjects = cache(async () => projects);

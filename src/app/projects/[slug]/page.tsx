@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ExternalLink } from "lucide-react";
+import { ArticleShare } from "@/components/blog/article-share";
+import { ProjectStatusBadge } from "@/components/projects/project-status-badge";
 import { Container } from "@/components/shared/container";
 import { TypewriterTitle } from "@/components/shared/typewriter-title";
 import { buttonVariants } from "@/components/ui/button";
@@ -33,6 +35,7 @@ export async function generateMetadata({
   }
 
   const projectUrl = `${siteConfig.url}/projects/${project.slug}`;
+  const projectImageUrl = `${siteConfig.url}${project.logo}`;
 
   return {
     title: project.title,
@@ -44,6 +47,18 @@ export async function generateMetadata({
       type: "article",
       url: projectUrl,
       siteName: siteConfig.name,
+      images: [
+        {
+          url: projectImageUrl,
+          alt: `${project.title} project preview`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${project.title} | ${siteConfig.author.name}`,
+      description: project.summary,
+      images: [projectImageUrl],
     },
   };
 }
@@ -55,6 +70,8 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
   if (!project) {
     notFound();
   }
+
+  const projectUrl = `${siteConfig.url}/projects/${project.slug}`;
 
   return (
     <Container className="py-12 sm:py-16 lg:py-20">
@@ -69,9 +86,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
       <article className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start">
         <div>
           <header className="max-w-3xl">
-            <p className="text-sm font-medium uppercase text-primary">
-              {project.status} / {project.year}
-            </p>
+            <ProjectStatusBadge status={project.status} year={project.year} />
             <div className="mt-4 flex flex-col gap-5 sm:flex-row sm:items-center">
               <div className="flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-xl">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -146,6 +161,13 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
               ))}
             </ul>
           </section>
+          <ArticleShare
+            description={project.summary}
+            heading="Share this project"
+            helperText="Share this project with someone who might find it useful."
+            title={project.title}
+            url={projectUrl}
+          />
         </div>
 
         <div>

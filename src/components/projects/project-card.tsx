@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import { ProjectStatusBadge } from "@/components/projects/project-status-badge";
 import type { Project } from "@/types/project";
 
 interface ProjectCardProps {
@@ -21,12 +22,18 @@ export function ProjectCard({ project }: ProjectCardProps) {
             />
           </div>
           <div className="min-w-0">
-            <p className="text-sm text-primary">{project.status}</p>
+            <ProjectStatusBadge status={project.status} />
             <h2 className="mt-2 text-2xl font-semibold leading-tight">
-            <Link href={`/projects/${project.slug}`} className="focus:outline-none">
-              <span className="absolute inset-0 rounded-lg" aria-hidden="true" />
-              {project.title}
-            </Link>
+              <Link
+                href={`/projects/${project.slug}`}
+                className="focus:outline-none"
+              >
+                <span
+                  className="absolute inset-0 rounded-lg"
+                  aria-hidden="true"
+                />
+                {project.title}
+              </Link>
             </h2>
           </div>
         </div>
