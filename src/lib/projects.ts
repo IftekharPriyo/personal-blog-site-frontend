@@ -148,7 +148,7 @@ const projects: Project[] = [
     stack: [
       "Node.js",
       "TypeScript",
-      "pnpm",
+      "npm CLI package",
       "Git hooks",
       "Git CLI",
       "Terminal UX",
